@@ -9,6 +9,8 @@ jobs:
   prepare-build:
     name: Prepare Build
     runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.gen-matrix.outputs.packages }}
     steps:
       - uses: actions/checkout@v6
         with:

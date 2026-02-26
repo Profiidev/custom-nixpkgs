@@ -1,5 +1,5 @@
 {
-  description = "Custom Nixpkgs I use in my configurations.";
+  description = "Custom Nixpkgs I use in my configurations";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
