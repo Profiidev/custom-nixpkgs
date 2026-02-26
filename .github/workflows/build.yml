@@ -78,7 +78,13 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           skipPush: true
 
-      - run: nix show-derivation .#${{ matrix.package }}
+      - run: nix show-derivation .#${{ matrix.package }} --accept-flake-config > derivation.json
+      - name: Upload Derivation
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-derivation-json
+          path: derivation.json
+          retention-days: 1
       - name: Build package
         run: nix build .#${{ matrix.package }} -Lv --print-out-paths --accept-flake-config
 
