@@ -63,6 +63,7 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
+              inputs.vicinae.overlays.default
               overlay
             ];
           };
