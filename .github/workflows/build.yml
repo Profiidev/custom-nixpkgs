@@ -78,6 +78,7 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           skipPush: true
 
+      - run: nix show-derivation .#${{ matrix.package }}
       - name: Build package
         run: nix build .#${{ matrix.package }} -Lv --print-out-paths --accept-flake-config
 
