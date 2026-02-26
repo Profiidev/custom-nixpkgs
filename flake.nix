@@ -1,5 +1,14 @@
 {
-  description = "Custom Nixpkgs I use in my configurations";
+  description = "Custom Nixpkgs I use in my configurations.";
+
+  nixConfig = {
+    extra-substituters = [
+      "https://profidev.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "profidev.cachix.org-1:xdwadal2vlCD50JtDTy8NwjOJvkOtjdjy1y91ElU9GE="
+    ];
+  };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
