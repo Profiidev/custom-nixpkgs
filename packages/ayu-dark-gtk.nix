@@ -1,7 +1,7 @@
 { ayu-theme-gtk, ... }:
 
 let
-  gtk4CssOverride = ../assets/ayu-dark-gtk4.css;
+  gtk4CssOverride = ../assets/ayu-dark-gtk4.css.asset;
 in
 ayu-theme-gtk.overrideAttrs (oldAttrs: {
   pname = "ayu-dark-gtk";
