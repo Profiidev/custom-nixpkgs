@@ -52,7 +52,7 @@
             ];
           };
 
-          utils = import ./utils.nix { inherit (pkgs) lib; };
+          utils = import ./utils.nix { inherit pkgs; };
         in
         {
           packages = builtins.listToAttrs (
