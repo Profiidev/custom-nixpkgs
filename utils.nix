@@ -12,6 +12,7 @@ let
     "moondeck-buddy"
     "sddm-theme"
     "nwjs"
+    "vicinae"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
