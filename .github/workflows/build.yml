@@ -80,13 +80,12 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
           skipPush: true
 
-      - name: Build package (push)
-        if: github.event_name != 'pull_request'
-        run: nix build .#${{ matrix.package }} --print-out-paths | cachix push profidev
+      - name: Build package
+        run: nix build .#${{ matrix.package }} -Lv --print-out-paths
 
-      - name: Build package (pull request)
-        if: github.event_name == 'pull_request'
-        run: nix build .#${{ matrix.package }} --print-out-paths
+      - name: Push to Cachix
+        if: github.event_name != 'pull_request'
+        run: readlink result | cachix push profidev
 
   build-gather:
     needs:
