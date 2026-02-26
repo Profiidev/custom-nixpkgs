@@ -84,7 +84,7 @@ jobs:
       - name: Output build results
         run: |
           RESULT="${{ needs.build.result }}"
-          if [ $RESULT == "success" || $RESULT == "skipped" ]; then
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
             echo "Build succeeded for all packages"
             exit 0
           else
