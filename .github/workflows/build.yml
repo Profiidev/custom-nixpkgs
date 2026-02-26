@@ -70,10 +70,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
-        with:
-          extra_nix_config: |
-            trusted-public-keys = profidev.cachix.org-1:xdwadal2vlCD50JtDTy8NwjOJvkOtjdjy1y91ElU9GE= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
-            substituters = https://profidev.cachix.org https://cache.nixos.org/
       - uses: cachix/cachix-action@v16
         if: github.event_name != 'pull_request'
         with:
@@ -83,7 +79,7 @@ jobs:
           skipPush: true
 
       - name: Build package
-        run: nix build .#${{ matrix.package }} -Lv --print-out-paths
+        run: nix build .#${{ matrix.package }} -Lv --print-out-paths --accept-flake-config
 
       - name: Push to Cachix
         if: github.event_name != 'pull_request'
