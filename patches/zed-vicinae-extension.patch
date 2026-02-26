@@ -1,0 +1,603 @@
+diff --git a/.gitignore b/.gitignore
+index e5a94c10c..bd03cf5af 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -8,3 +8,5 @@
+ 
+ # test files
+ test/fixtures
++
++/vicinae-env.d.ts
+diff --git a/assets/remote.svg b/assets/remote.svg
+index a8b6ad92b..13df5ec5f 100644
+--- a/assets/remote.svg
++++ b/assets/remote.svg
+@@ -1,16 +1,7 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
+-  <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
+-  <line x1="6" x2="6.01" y1="6" y2="6" />
+-  <line x1="6" x2="6.01" y1="18" y2="18" />
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
++<svg width="100%" height="100%" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
++    <g transform="matrix(0.955814,0,0,0.955814,0.148835,2.2093)">
++        <path d="M4,5C2.9,5 2,5.9 2,7L2,36C2,37.1 2.9,38 4,38L28.17,38C28.72,34.66 30.659,31.79 33.369,30L4,30L4,7L46,7L46,29.6C46.72,30.01 47.39,30.501 48,31.051L48,7C48,5.9 47.1,5 46,5L4,5ZM40,30C34.477,30 30,34.477 30,40C30,45.523 34.477,50 40,50C45.523,50 50,45.523 50,40C50,34.477 45.523,30 40,30ZM44.293,33.293L45.707,34.707L42.414,38L45.707,41.293L44.293,42.707L40.293,38.707C39.902,38.316 39.902,37.684 40.293,37.293L44.293,33.293ZM35.707,37.293L39.707,41.293C40.098,41.684 40.098,42.316 39.707,42.707L35.707,46.707L34.293,45.293L37.586,42L34.293,38.707L35.707,37.293ZM19,40L19,42L16,42C14.35,42 13,43.35 13,45L13,46L29.6,46C29.06,45.07 28.651,44.07 28.381,43C28.291,42.67 28.22,42.34 28.17,42C28.06,41.35 28,40.68 28,40L19,40Z" style="fill:white;fill-rule:nonzero;"/>
++    </g>
+ </svg>
+diff --git a/package.json b/package.json
+index 730ee3184..e212a7e30 100644
+--- a/package.json
++++ b/package.json
+@@ -23,13 +23,6 @@
+   ],
+   "license": "MIT",
+   "commands": [
+-    {
+-      "name": "open",
+-      "title": "Open with Zed",
+-      "subtitle": "Zed",
+-      "description": "Opens the currently selected Finder item with Zed",
+-      "mode": "no-view"
+-    },
+     {
+       "name": "search",
+       "title": "Search Recent Projects",
+@@ -98,6 +91,7 @@
+     {
+       "name": "showOpenStatus",
+       "type": "checkbox",
++      "title": "Open Status",
+       "required": false,
+       "label": "Show Open Status",
+       "default": false,
+diff --git a/src/components/entry-item.tsx b/src/components/entry-item.tsx
+index 0244b3d80..f2bb30d1d 100644
+--- a/src/components/entry-item.tsx
++++ b/src/components/entry-item.tsx
+@@ -48,8 +48,9 @@ function getEntryIcon(entry: Entry): List.Item.Props["icon"] {
+   }
+ 
+   // Default: use folder icon
+-  const primaryPath = getEntryPrimaryPath(entry);
+-  return primaryPath ? { fileIcon: primaryPath } : Icon.Folder;
++  //const primaryPath = getEntryPrimaryPath(entry);
++  //return primaryPath ? { fileIcon: primaryPath } : Icon.Folder;
++  return Icon.Folder;
+ }
+ 
+ export const EntryItem = ({ entry, ...props }: EntryItemProps) => {
+diff --git a/src/lib/db.ts b/src/lib/db.ts
+index f295e0b68..01f0c40fa 100644
+--- a/src/lib/db.ts
++++ b/src/lib/db.ts
+@@ -1,5 +1,4 @@
+-import { execFilePromise, isWindows } from "./utils";
+-import { executeSQL } from "@raycast/utils";
++import { execFilePromise } from "./utils";
+ 
+ // Zed Build types
+ export type ZedBuild = "Zed" | "Zed Preview" | "Zed Dev";
+@@ -35,26 +34,6 @@ export const MIN_SUPPORTED_DB_VERSION = 34;
+  */
+ export async function queryDb(dbPath: string, query: string): Promise<string> {
+   try {
+-    if (isWindows) {
+-      try {
+-        const res = await executeSQL(dbPath, query);
+-
+-        if (!res || !Array.isArray(res) || res.length === 0) {
+-          return "";
+-        }
+-
+-        const firstRow = res[0] as Record<string, unknown>;
+-        if (res.length === 1 && Object.keys(firstRow).length === 1) {
+-          return String(Object.values(firstRow)[0]);
+-        }
+-
+-        return res.map((row) => Object.values(row as Record<string, unknown>).join("\t")).join("\n");
+-      } catch (error) {
+-        console.error(`Error querying Zed workspace DB (executeSQL): ${error}`);
+-        throw error;
+-      }
+-    }
+-
+     // Apply `--init /dev/null` to ignore user sqlite configuration on Unix-like systems
+     const result = await execFilePromise("sqlite3", ["--init", "/dev/null", dbPath, query]);
+ 
+diff --git a/src/lib/utils.ts b/src/lib/utils.ts
+index 4b898458d..2b94983e5 100644
+--- a/src/lib/utils.ts
++++ b/src/lib/utils.ts
+@@ -4,9 +4,6 @@ import { execFile, execFileSync } from "child_process";
+ 
+ export const execFilePromise = util.promisify(execFile);
+ 
+-export const isWindows = process.platform === "win32";
+-export const isMac = process.platform === "darwin";
+-
+ export function exists(p: string) {
+   try {
+     return existsSync(new URL(p));
+diff --git a/src/lib/windows.ts b/src/lib/windows.ts
+deleted file mode 100644
+index a6027bca9..000000000
+--- a/src/lib/windows.ts
++++ /dev/null
+@@ -1,66 +0,0 @@
+-import { join } from "node:path";
+-import { zedBuild } from "./preferences";
+-import { execFilePromise } from "./utils";
+-import { runPowerShellScript } from "@raycast/utils";
+-
+-export function execWindowsZed(args: string[]) {
+-  const localAppData = process.env.LOCALAPPDATA;
+-  if (localAppData) {
+-    const windowsPath = join(localAppData, "Programs", zedBuild, "bin", "zed");
+-    return execFilePromise(windowsPath, args);
+-  } else {
+-    return execFilePromise("zed", args);
+-  }
+-}
+-
+-export async function getSelectedFileExplorerItems() {
+-  const script = `
+-function Get-SelectedExplorerItemsInternal {
+-    [CmdletBinding()]
+-    Param()
+-
+-    $shell = New-Object -ComObject Shell.Application
+-    $selectedPaths = @()
+-
+-    foreach ($window in $shell.Windows()) {
+-        try {
+-            if ($window.Document -and $window.Document.Folder -and $window.Document.SelectedItems) {
+-                $items = $window.Document.SelectedItems()
+-                if ($items.Count -gt 0) {
+-                    foreach ($item in $items) {
+-                        $selectedPaths += $item.Path
+-                    }
+-                    return $selectedPaths
+-                }
+-            }
+-        }
+-        catch { }
+-    }
+-    return $selectedPaths
+-}
+-
+-Get-SelectedExplorerItemsInternal | ForEach-Object { Write-Output $_ }
+-  `;
+-
+-  const rawOutput = await runPowerShellScript(script);
+-  const paths = rawOutput
+-    .split(/\r?\n/)
+-    .map((path) => path.trim())
+-    .filter((line) => line !== "");
+-  return paths;
+-}
+-
+-export async function getCurrentExplorerPath() {
+-  const script = `
+-$url = (New-Object -ComObject Shell.Application).Windows() |
+-  Where-Object { $_.LocationName -ne $null -and $_.LocationName -ne "Desktop" } |
+-  Select-Object -First 1 -ExpandProperty LocationURL
+-
+-Write-Output $url
+-`;
+-  const path = decodeURI(await runPowerShellScript(script))
+-    .trim()
+-    .replace("file:///", "");
+-
+-  return path;
+-}
+diff --git a/src/lib/zed.ts b/src/lib/zed.ts
+index 99834e923..1dcc60605 100644
+--- a/src/lib/zed.ts
++++ b/src/lib/zed.ts
+@@ -2,20 +2,19 @@ import fs from "fs";
+ import { execFile } from "child_process";
+ import { promisify } from "util";
+ import { getApplications, getPreferenceValues } from "@raycast/api";
+-import { runAppleScript } from "@raycast/utils";
+ import { homedir } from "os";
+-import { isMac, isWindows } from "./utils";
+ import { zedBuild } from "./preferences";
++import { ZedBuild } from "./db";
++import path from "path";
+ 
+ const execFileAsync = promisify(execFile);
+ 
+-export type ZedBuild = Preferences["build"];
+ export type ZedBundleId = "dev.zed.Zed" | "dev.zed.Zed-Preview" | "dev.zed.Zed-Dev";
+ 
+-const ZedBundleIdBuildMapping: Record<ZedBuild, { macos: ZedBundleId; windows: { name: string } }> = {
+-  Zed: { macos: "dev.zed.Zed", windows: { name: "Zed" } },
+-  "Zed Preview": { macos: "dev.zed.Zed-Preview", windows: { name: "Zed Preview" } },
+-  "Zed Dev": { macos: "dev.zed.Zed-Dev", windows: { name: "Zed Dev" } },
++const ZedBundleIdBuildMapping: Record<ZedBuild, string> = {
++  Zed: "Zed",
++  "Zed Preview": "Zed Preview",
++  "Zed Dev": "Zed Dev",
+ };
+ 
+ const ZedDbNameMapping: Record<ZedBuild, string> = {
+@@ -29,28 +28,11 @@ const ZedDbNameMapping: Record<ZedBuild, string> = {
+  * The CLI can be installed via "zed: install cli" command in Zed.
+  */
+ const ZedCliPaths: Record<ZedBuild, string> = {
+-  Zed: "/usr/local/bin/zed",
+-  "Zed Preview": "/usr/local/bin/zed-preview",
+-  "Zed Dev": "/usr/local/bin/zed-dev",
++  Zed: "zeditor",
++  "Zed Preview": "zed-preview",
++  "Zed Dev": "zed-dev",
+ };
+ 
+-/**
+- * Fallback CLI paths inside the Zed app bundle.
+- */
+-const ZedAppCliPaths: Record<ZedBuild, string> = {
+-  Zed: "/Applications/Zed.app/Contents/MacOS/cli",
+-  "Zed Preview": "/Applications/Zed Preview.app/Contents/MacOS/cli",
+-  "Zed Dev": "/Applications/Zed Dev.app/Contents/MacOS/cli",
+-};
+-
+-export function getZedBundleId(build: ZedBuild): ZedBundleId {
+-  return ZedBundleIdBuildMapping[build].macos;
+-}
+-
+-export function getZedWindowsMetadata(build: ZedBuild): { name: string } {
+-  return ZedBundleIdBuildMapping[build].windows;
+-}
+-
+ export function getZedDbName(build: ZedBuild): string {
+   return ZedDbNameMapping[build];
+ }
+@@ -58,25 +40,15 @@ export function getZedDbName(build: ZedBuild): string {
+ export function getZedDbPath() {
+   const preferences = getPreferenceValues<Preferences>();
+   const zedBuild = preferences.build;
+-  if (isMac) {
+-    return `${homedir()}/Library/Application Support/Zed/db/${getZedDbName(zedBuild)}/db.sqlite`;
+-  } else {
+-    return `${homedir()}\\AppData\\Local\\Zed\\db\\${getZedDbName(zedBuild)}\\db.sqlite`;
+-  }
++  return `${homedir()}/.local/share/zed/db/${getZedDbName(zedBuild)}/db.sqlite`;
+ }
+ 
+ export async function getZedApp() {
+   const applications = await getApplications();
+-  const zedBundleId = getZedBundleId(zedBuild);
+-  const windowsMetadata = getZedWindowsMetadata(zedBuild);
++  const name = ZedBundleIdBuildMapping[zedBuild as ZedBuild];
+ 
+   const app = applications.find((a) => {
+-    if (isMac) {
+-      return a.bundleId === zedBundleId;
+-    }
+-    if (isWindows) {
+-      return a.name === windowsMetadata.name;
+-    }
++    return a.name === name;
+   });
+ 
+   return app;
+@@ -88,56 +60,25 @@ export async function getZedApp() {
+  * Returns null on Windows or if no CLI is found.
+  */
+ export function getZedCliPath(build: ZedBuild = zedBuild): string | null {
+-  if (!isMac) {
+-    return null;
+-  }
+-
+   // Check for installed CLI first
+   const installedCliPath = ZedCliPaths[build];
+   if (fs.existsSync(installedCliPath)) {
+     return installedCliPath;
+   }
+ 
+-  // Fall back to CLI inside app bundle
+-  const appCliPath = ZedAppCliPaths[build];
+-  if (fs.existsSync(appCliPath)) {
+-    return appCliPath;
+-  }
++  const pathEnv = process.env.PATH || "";
++  const paths = pathEnv.split(path.delimiter);
+ 
+-  return null;
+-}
+-
+-const ZedProcessNameMapping: Record<ZedBundleId, string> = {
+-  "dev.zed.Zed": "Zed",
+-  "dev.zed.Zed-Preview": "Zed Preview",
+-  "dev.zed.Zed-Dev": "Zed Dev",
+-};
+-
+-export async function closeZedWindow(windowTitle: string, bundleId: ZedBundleId): Promise<boolean> {
+-  const processName = ZedProcessNameMapping[bundleId];
+-  const escapedTitle = windowTitle.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+-
+-  const script = `
+-tell application "System Events"
+-  tell process "${processName}"
+-    repeat with w in (every window)
+-      if name of w contains "${escapedTitle}" then
+-        click (first button of w whose description is "close button")
+-        return "true"
+-      end if
+-    end repeat
+-    return "false"
+-  end tell
+-end tell
+-`;
++  const exists = paths.some((dir) => {
++    const fullPath = path.join(dir, installedCliPath);
++    return fs.existsSync(fullPath) || (process.platform === "win32" && fs.existsSync(`${fullPath}.exe`));
++  });
+ 
+-  try {
+-    const result = await runAppleScript(script);
+-    return result === "true";
+-  } catch (error) {
+-    console.error("Failed to close Zed window:", error);
+-    return false;
++  if (exists) {
++    return installedCliPath;
+   }
++
++  return null;
+ }
+ 
+ /**
+diff --git a/src/open-new-window.tsx b/src/open-new-window.tsx
+index 56dabc1ad..689a3c360 100644
+--- a/src/open-new-window.tsx
++++ b/src/open-new-window.tsx
+@@ -1,32 +1,9 @@
+-import { closeMainWindow, getPreferenceValues } from "@raycast/api";
+-import { runAppleScript, showFailureToast } from "@raycast/utils";
+-import { ZedBuild } from "./lib/zed";
+-import { isWindows } from "./lib/utils";
+-import { execWindowsZed } from "./lib/windows";
+-
+-const preferences: Record<string, string> = getPreferenceValues();
+-const zedBuild: ZedBuild = preferences.build as ZedBuild;
++import { closeMainWindow } from "@raycast/api";
++import { showFailureToast } from "@raycast/utils";
++import { execFilePromise } from "./lib/utils";
+ 
+ const makeNewWindow = async () => {
+-  if (isWindows) {
+-    await execWindowsZed(["-n"]);
+-  } else {
+-    await runAppleScript(`
+-      tell application "${zedBuild}"
+-	    activate
+-      end tell
+-      delay(0.5)
+-      tell application "${zedBuild}"
+-	    activate
+-      end tell
+-
+-      tell application "System Events"
+-	    tell process "${zedBuild}"
+-		    click menu item "New Window" of menu "File" of menu bar 1
+-	    end tell
+-      end tell
+-    `);
+-  }
++  await execFilePromise("zeditor", ["-n"]);
+ };
+ 
+ export default async function command() {
+diff --git a/src/open.ts b/src/open.ts
+deleted file mode 100644
+index 2e1c86f2e..000000000
+--- a/src/open.ts
++++ /dev/null
+@@ -1,68 +0,0 @@
+-import { closeMainWindow, getSelectedFinderItems, open, showToast, Toast } from "@raycast/api";
+-import { runAppleScript } from "@raycast/utils";
+-import { getZedApp } from "./lib/zed";
+-import { isMac, isWindows } from "./lib/utils";
+-import { getCurrentExplorerPath, getSelectedFileExplorerItems } from "./lib/windows";
+-
+-export const getCurrentFinderPath = async () => {
+-  const getCurrentFinderPathScript = `
+-      try
+-        tell application "Finder"
+-          return POSIX path of (insertion location as alias)
+-        end tell
+-      on error
+-        return ""
+-      end try
+-    `;
+-  return await runAppleScript(getCurrentFinderPathScript);
+-};
+-
+-const fileExplorerApp = isWindows ? "Windows Explorer" : "Finder";
+-
+-export default async function openWithZed() {
+-  try {
+-    let selectedItems: { path: string }[] = [];
+-
+-    if (isMac) {
+-      const finderItems = await getSelectedFinderItems();
+-      if (finderItems.length === 0) {
+-        const currentPath = await getCurrentFinderPath();
+-        if (currentPath) {
+-          selectedItems = [{ path: currentPath }];
+-        } else {
+-          throw new Error("No Finder item selected");
+-        }
+-      } else {
+-        selectedItems = finderItems.map((i) => ({ path: i.path }));
+-      }
+-    }
+-
+-    if (isWindows) {
+-      const explorerItems = await getSelectedFileExplorerItems();
+-      if (explorerItems.length === 0) {
+-        const currentPath = await getCurrentExplorerPath();
+-        if (currentPath) {
+-          selectedItems = [{ path: currentPath }];
+-        } else {
+-          throw new Error("No Explorer item selected");
+-        }
+-      } else {
+-        selectedItems = explorerItems.map((path) => ({ path }));
+-      }
+-    }
+-
+-    const app = await getZedApp();
+-    for (const { path } of selectedItems) {
+-      // on windows it just opens the first item, it is a raycast issue
+-      await open(encodeURI(path), app);
+-    }
+-
+-    await closeMainWindow();
+-  } catch (e) {
+-    await showToast({
+-      title: `Failed opening selected ${fileExplorerApp} item`,
+-      style: Toast.Style.Failure,
+-      message: e instanceof Error ? e.message : String(e),
+-    });
+-  }
+-}
+diff --git a/src/search.tsx b/src/search.tsx
+index 1ca5b1dd2..9df2d6ba6 100644
+--- a/src/search.tsx
++++ b/src/search.tsx
+@@ -1,18 +1,13 @@
+-import { Action, ActionPanel, Icon, List, showToast, Toast, getPreferenceValues, closeMainWindow } from "@raycast/api";
++import { Action, ActionPanel, Icon, List, showToast, Toast, closeMainWindow } from "@raycast/api";
+ import { useZedContext, withZed } from "./components/with-zed";
+-import { isWindows } from "./lib/utils";
+ import { exists } from "./lib/utils";
+-import { Entry, getEntry, getEntryPrimaryPath, isEntryMultiFolder } from "./lib/entry";
++import { Entry, getEntry, isEntryMultiFolder } from "./lib/entry";
+ import { EntryItem } from "./components/entry-item";
+ import { usePinnedEntries } from "./hooks/use-pinned-entries";
+ import { useRecentWorkspaces } from "./hooks/use-recent-workspaces";
+ import { isMultiFolder } from "./lib/workspaces";
+-import { closeZedWindow, getZedBundleId, openWithZedCli, ZedBuild } from "./lib/zed";
++import { openWithZedCli } from "./lib/zed";
+ import { showOpenStatus } from "./lib/preferences";
+-import { execWindowsZed } from "./lib/windows";
+-import { platform } from "os";
+-
+-const isMac = platform() === "darwin";
+ 
+ export function Command() {
+   const { dbPath, workspaceDbVersion, cliPath } = useZedContext();
+@@ -36,24 +31,6 @@ export function Command() {
+       isOpen: workspaces[String(entry.id)]?.isOpen ?? false,
+     }));
+ 
+-  const preferences = getPreferenceValues<Preferences>();
+-  const zedBuild = preferences.build as ZedBuild;
+-  const bundleId = getZedBundleId(zedBuild);
+-
+-  const closeEntry = async (entry: Entry) => {
+-    const toast = await showToast({ style: Toast.Style.Animated, title: "Closing project..." });
+-    const success = await closeZedWindow(entry.title, bundleId);
+-    if (success) {
+-      toast.style = Toast.Style.Success;
+-      toast.title = "Project closed";
+-      setTimeout(revalidate, 500);
+-    } else {
+-      toast.style = Toast.Style.Failure;
+-      toast.title = "Failed to close project";
+-      toast.message = "Window not found";
+-    }
+-  };
+-
+   const removeAndUnpinEntry = async (entry: Pick<Entry, "id" | "uri">) => {
+     await removeEntry(entry.id);
+     unpinEntry(entry);
+@@ -85,20 +62,6 @@ export function Command() {
+               actions={
+                 <ActionPanel>
+                   <OpenInZedAction entry={entry} revalidate={revalidate} />
+-                  {isMac && entry.isOpen && (
+-                    <Action
+-                      title="Close Project Window"
+-                      icon={Icon.XMarkCircle}
+-                      onAction={() => closeEntry(entry)}
+-                      shortcut={{ modifiers: ["cmd", "shift"], key: "w" }}
+-                    />
+-                  )}
+-                  {entry.type === "local" &&
+-                    (isWindows ? (
+-                      <Action.Open title="Show in File Explorer" target={getEntryPrimaryPath(entry)} />
+-                    ) : (
+-                      <Action.ShowInFinder path={getEntryPrimaryPath(entry)} />
+-                    ))}
+                   <Action
+                     title="Unpin Entry"
+                     icon={Icon.PinDisabled}
+@@ -153,20 +116,6 @@ export function Command() {
+                 actions={
+                   <ActionPanel>
+                     <OpenInZedAction entry={entry} revalidate={revalidate} />
+-                    {isMac && entry.isOpen && (
+-                      <Action
+-                        title="Close Project Window"
+-                        icon={Icon.XMarkCircle}
+-                        onAction={() => closeEntry(entry)}
+-                        shortcut={{ modifiers: ["cmd", "shift"], key: "w" }}
+-                      />
+-                    )}
+-                    {entry.type === "local" &&
+-                      (isWindows ? (
+-                        <Action.Open title="Show in File Explorer" target={getEntryPrimaryPath(entry)} />
+-                      ) : (
+-                        <Action.ShowInFinder path={getEntryPrimaryPath(entry)} />
+-                      ))}
+                     <Action
+                       title="Pin Entry"
+                       icon={Icon.Pin}
+@@ -190,14 +139,6 @@ export function Command() {
+ function OpenInZedAction({ entry, revalidate }: { entry: Entry; revalidate: () => void }) {
+   const { app, cliPath } = useZedContext();
+   const zedIcon = { fileIcon: app.path };
+-  const primaryPath = getEntryPrimaryPath(entry);
+-
+-  // WSL support (Windows only)
+-  const openZedInWsl = () => execWindowsZed(["--wsl", `${entry.wsl?.user}@${entry.wsl?.distro}`, `/${primaryPath}`]);
+-
+-  if (entry.wsl) {
+-    return <Action title="Open in Zed" onAction={openZedInWsl} icon={zedIcon} />;
+-  }
+ 
+   // Multi-folder workspace - use CLI
+   if (isEntryMultiFolder(entry) && cliPath) {
+@@ -205,7 +146,7 @@ function OpenInZedAction({ entry, revalidate }: { entry: Entry; revalidate: () =
+       try {
+         setTimeout(revalidate, 200);
+         await closeMainWindow();
+-        await openWithZedCli(cliPath, entry.paths);
++        await openWithZedCli(cliPath, [entry.uri]);
+       } catch (error) {
+         await showToast({
+           style: Toast.Style.Failure,
+@@ -222,7 +163,7 @@ function OpenInZedAction({ entry, revalidate }: { entry: Entry; revalidate: () =
+     const openSingleFolder = async () => {
+       setTimeout(revalidate, 200);
+       await closeMainWindow();
+-      await openWithZedCli(cliPath!, [entry.paths[0]]);
++      await openWithZedCli(cliPath!, [entry.uri]);
+     };
+     return <Action title="Open in Zed" icon={zedIcon} onAction={openSingleFolder} />;
+   }
