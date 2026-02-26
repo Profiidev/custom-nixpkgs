@@ -1,0 +1,74 @@
+name: Checks and Validation
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  prepare-build:
+    name: Prepare Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - id: gen-matrix
+        run: |
+          GLOBAL_TRIGGERS=("flake.nix" "flake.lock" "overlay.nix" "utils.nix")
+          PACKAGE_FILES=$(ls -1 packages/ 2>/dev/null || echo "")
+          OVERLAY_FILES=$(ls -1 overlays/ 2>/dev/null || echo "")
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "Generating matrix for pull request #${{ github.event.pull_request.number }}"
+            BASE_SHA="origin/${{ github.base_ref }}"
+          else
+            echo "Generating matrix for push to main branch"
+            BASE_SHA="HEAD~1"
+          fi
+
+          CHANGES=$(git diff --name-only $BASE_SHA HEAD)
+          ALL_PKGS=$(echo -e "${PACKAGE_FILES}\n${OVERLAY_FILES}" | sed '/\.nix$//' | sort -u | grep -v '^$')
+
+          echo "Found packages and overlays: $ALL_PKGS"
+          echo "Changed files: $CHANGES"
+
+          SHOULD_BUILD_ALL=false
+          for trigger in "${GLOBAL_TRIGGERS[@]}"; do
+            if echo "$CHANGES" | grep -q "^$trigger"; then
+              SHOULD_BUILD_ALL=true
+              break
+            fi
+          done
+
+          if [ "$SHOULD_BUILD_ALL" = true ]; then
+            echo "Global trigger changed, building all packages and overlays"
+            MATRIX=$(echo "$ALL_PKGS" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          else
+            CHANGED_LIST=$(echo "$ALL_PKGS" | while read -r pkg; do
+              if echo "$CHANGES" | grep -E -q "^(packages|overlays)/$pkg(\.nix)?(/|$)"; then
+                echo "$pkg"
+              fi
+            done)
+            MATRIX=$(echo "$CHANGED_LIST" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          fi
+
+          echo "Generated matrix: $MATRIX"
+          echo "packages=$MATRIX" >> $GITHUB_OUTPUT
+
+  build:
+    needs: prepare-build
+    name: Build Packages
+    runs-on: ubuntu-latest
+    if: ${{ needs.prepare-build.outputs.packages != '[]' && needs.prepare-build.outputs.packages != '' }}
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.prepare-build.outputs.packages) }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Dummy build step
+        run: echo Building package ${{ matrix.package }}...
