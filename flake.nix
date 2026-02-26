@@ -19,6 +19,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    vicinae-extensions = {
+      url = "github:vicinaehq/extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.vicinae.follows = "vicinae";
+    };
+
     bun2nix = {
       url = "github:baileylutcd/bun2nix?rev=72c047583edc83e2c2eada6e348dfaa622781331";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -74,6 +80,9 @@
       )
       // {
         overlays.default = overlay;
+
+        vicinae = inputs.vicinae;
+        vicinae-extensions = inputs.vicinae-extensions;
       }
     );
 }
