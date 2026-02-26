@@ -29,7 +29,7 @@ jobs:
           fi
 
           CHANGES=$(git diff --name-only $BASE_SHA HEAD)
-          ALL_PKGS=$(echo -e "${PACKAGE_FILES}\n${OVERLAY_FILES}" | sed '/\.nix$//' | sort -u | grep -v '^$')
+          ALL_PKGS=$(echo -e "${PACKAGE_FILES}\n${OVERLAY_FILES}" | sed 's/\.nix$//' | sort -u | grep -v '^$')
 
           echo "Found packages and overlays: $ALL_PKGS"
           echo "Changed files: $CHANGES"
