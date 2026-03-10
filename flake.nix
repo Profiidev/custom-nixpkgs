@@ -69,6 +69,7 @@
           };
 
           utils = import ./utils.nix { inherit pkgs; };
+          sources = import ./sources.nix { inherit pkgs; };
         in
         {
           packages = builtins.listToAttrs (
@@ -77,6 +78,8 @@
               value = pkgs.${pkg};
             }) (utils.packageNames ++ utils.overlayNames)
           );
+
+          sources = sources;
         }
       )
       // {
