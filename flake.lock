@@ -2,14 +2,8 @@
   "nodes": {
     "blueprint": {
       "inputs": {
-        "nixpkgs": [
-          "bun2nix",
-          "nixpkgs"
-        ],
-        "systems": [
-          "bun2nix",
-          "systems"
-        ]
+        "nixpkgs": ["bun2nix", "nixpkgs"],
+        "systems": ["bun2nix", "systems"]
       },
       "locked": {
         "lastModified": 1744632722,
@@ -28,9 +22,7 @@
     "bun2nix": {
       "inputs": {
         "blueprint": "blueprint",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "systems": "systems",
         "treefmt-nix": "treefmt-nix"
       },
@@ -154,10 +146,7 @@
     },
     "treefmt-nix": {
       "inputs": {
-        "nixpkgs": [
-          "bun2nix",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["bun2nix", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1748243702,
@@ -175,9 +164,7 @@
     },
     "vicinae": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "systems": "systems_3"
       },
       "locked": {
@@ -196,13 +183,9 @@
     },
     "vicinae-extensions": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "systems": "systems_4",
-        "vicinae": [
-          "vicinae"
-        ]
+        "vicinae": ["vicinae"]
       },
       "locked": {
         "lastModified": 1774950032,
