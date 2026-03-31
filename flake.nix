@@ -3,10 +3,10 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://profidev.cachix.org"
+      "https://projects.cache.profidev.io"
     ];
     extra-trusted-public-keys = [
-      "profidev.cachix.org-1:xdwadal2vlCD50JtDTy8NwjOJvkOtjdjy1y91ElU9GE="
+      "profidev.cachix.org:tg4xEn64UMdvA5jJYT8omo/CQHk8+spLyeGT2YAku70="
     ];
   };
 
