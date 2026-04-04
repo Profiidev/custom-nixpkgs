@@ -71,6 +71,9 @@
               inputs.vicinae.overlays.default
               inputs.noctalia.overlays.default
               overlay
+              (final: prev: {
+                bun2nix = inputs.bun2nix.packages.${system}.default;
+              })
             ];
           };
 
