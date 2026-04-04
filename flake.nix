@@ -59,9 +59,9 @@
             prev
             ;
         })
-        // (final: prev: {
+        // {
           bun2nix = inputs.bun2nix.packages.${system}.default;
-        });
+        };
     in
     (
       flake-utils.lib.eachDefaultSystem (
