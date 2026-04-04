@@ -29,6 +29,11 @@
       url = "github:baileylutcd/bun2nix?rev=72c047583edc83e2c2eada6e348dfaa622781331";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -64,6 +69,7 @@
             config.allowUnfree = true;
             overlays = [
               inputs.vicinae.overlays.default
+              inputs.noctalia.overlays.default
               overlay
             ];
           };
