@@ -96,6 +96,7 @@
 
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
+        noctalia = inputs.noctalia;
       }
     );
 }
