@@ -13,6 +13,9 @@ let
     "sddm-theme"
     "nwjs"
     "vicinae"
+    "noctalia-shell"
+    "noctalia-qs"
+    "quickshell"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
