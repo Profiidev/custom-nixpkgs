@@ -58,7 +58,9 @@
             final
             prev
             ;
-        });
+        })
+        // (inputs.vicinae.overlays.default final prev)
+        // (inputs.noctalia.overlays.default final prev);
     in
     (
       flake-utils.lib.eachDefaultSystem (
