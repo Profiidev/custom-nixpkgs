@@ -69,7 +69,8 @@
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) prevPkgs externalOverlays;
         in
-        (import ./overlay.nix {
+        externalPkgs
+        // (import ./overlay.nix {
           inherit
             mkBunDerivation
             mkVicinaeExtension
