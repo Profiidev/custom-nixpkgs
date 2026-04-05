@@ -3,6 +3,5 @@
   "noctalia-qs"
   "quickshell"
   "vicinae"
-  "wayscriber"
   "wayscriber-configurator"
 ]
