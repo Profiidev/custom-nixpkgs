@@ -96,7 +96,7 @@
             map (pkg: {
               name = pkg;
               value = pkgs.${pkg};
-            }) (utils.packageNames ++ utils.overlayNames)
+            }) (utils.packageNames ++ utils.overlayNames ++ utils.buildPackageNames)
           );
 
           sources = sources;

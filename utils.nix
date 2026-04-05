@@ -16,6 +16,8 @@ let
     "noctalia-shell"
     "noctalia-qs"
     "quickshell"
+    "wayscriber"
+    "wayscriber-configurator"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
@@ -33,10 +35,13 @@ let
     builtins.attrNames (builtins.readDir ./packages)
   );
 
+  allBuildPackageNames = (import ./packages.nix);
+
   applyFilters =
     list: builtins.filter filterDarwinUnsupported (builtins.filter filterArmUnsupported list);
 in
 {
   overlayNames = applyFilters allOverlayNames;
   packageNames = applyFilters allPackageNames;
+  buildPackageNames = applyFilters allBuildPackageNames;
 }
