@@ -56,25 +56,27 @@
           mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
           mkVicinaeExtension = inputs.vicinae.packages.${system}.mkVicinaeExtension;
 
-          overlays = [
+          externalOverlays = [
             inputs.vicinae.overlays.default
             inputs.noctalia.overlays.default
           ];
+
+          prevPkgs = prev // {
+            bun2nix = inputs.bun2nix.packages.${system}.default;
+            wayscriber = inputs.wayscriber.packages.${system}.default;
+            wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
+          };
+
+          externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) prevPkgs externalOverlays;
         in
         (import ./overlay.nix {
           inherit
             mkBunDerivation
             mkVicinaeExtension
             final
-            prev
             ;
-        })
-        // (prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } overlays)
-        // {
-          bun2nix = inputs.bun2nix.packages.${system}.default;
-          wayscriber = inputs.wayscriber.packages.${system}.default;
-          wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
-        };
+          prev = externalPkgs;
+        });
     in
     (
       flake-utils.lib.eachDefaultSystem (
