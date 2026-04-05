@@ -34,6 +34,11 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wayscriber = {
+      url = "github:devmobasa/wayscriber";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -61,6 +66,8 @@
         })
         // {
           bun2nix = inputs.bun2nix.packages.${system}.default;
+          wayscriber = inputs.wayscriber.packages.${system}.default;
+          wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
         };
     in
     (
