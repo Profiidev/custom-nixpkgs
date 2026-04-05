@@ -61,22 +61,23 @@
             inputs.noctalia.overlays.default
           ];
 
-          prevPkgs = prev // {
+          localPkgs = {
             bun2nix = inputs.bun2nix.packages.${system}.default;
             wayscriber = inputs.wayscriber.packages.${system}.default;
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
           };
 
-          externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) prevPkgs externalOverlays;
+          externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;
         in
         externalPkgs
+        // localPkgs
         // (import ./overlay.nix {
           inherit
             mkBunDerivation
             mkVicinaeExtension
             final
             ;
-          prev = externalPkgs;
+          prev = (prev // externalPkgs // localPkgs);
         });
     in
     (
