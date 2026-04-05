@@ -55,6 +55,11 @@
 
           mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
           mkVicinaeExtension = inputs.vicinae.packages.${system}.mkVicinaeExtension;
+
+          overlays = [
+            inputs.vicinae.overlays.default
+            inputs.noctalia.overlays.default
+          ];
         in
         (import ./overlay.nix {
           inherit
@@ -64,6 +69,7 @@
             prev
             ;
         })
+        // (prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } overlays)
         // {
           bun2nix = inputs.bun2nix.packages.${system}.default;
           wayscriber = inputs.wayscriber.packages.${system}.default;
@@ -78,12 +84,7 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              inputs.vicinae.overlays.default
-              inputs.noctalia.overlays.default
               overlay
-              (final: prev: {
-                bun2nix = inputs.bun2nix.packages.${system}.default;
-              })
             ];
           };
 
