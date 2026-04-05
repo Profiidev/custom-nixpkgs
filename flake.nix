@@ -34,6 +34,11 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wayscriber = {
+      url = "github:devmobasa/wayscriber";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -50,6 +55,11 @@
 
           mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
           mkVicinaeExtension = inputs.vicinae.packages.${system}.mkVicinaeExtension;
+
+          overlays = [
+            inputs.vicinae.overlays.default
+            inputs.noctalia.overlays.default
+          ];
         in
         (import ./overlay.nix {
           inherit
@@ -59,8 +69,11 @@
             prev
             ;
         })
+        // (prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } overlays)
         // {
           bun2nix = inputs.bun2nix.packages.${system}.default;
+          wayscriber = inputs.wayscriber.packages.${system}.default;
+          wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
         };
     in
     (
@@ -71,12 +84,7 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              inputs.vicinae.overlays.default
-              inputs.noctalia.overlays.default
               overlay
-              (final: prev: {
-                bun2nix = inputs.bun2nix.packages.${system}.default;
-              })
             ];
           };
 
@@ -88,7 +96,7 @@
             map (pkg: {
               name = pkg;
               value = pkgs.${pkg};
-            }) (utils.packageNames ++ utils.overlayNames)
+            }) (utils.packageNames ++ utils.overlayNames ++ utils.buildPackageNames)
           );
 
           sources = sources;
