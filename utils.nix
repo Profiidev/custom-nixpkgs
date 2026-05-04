@@ -18,12 +18,14 @@ let
     "quickshell"
     "wayscriber"
     "wayscriber-configurator"
+    "affinity-v3"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
   armUnsupported = [
     "nwjs"
     "moondeck-buddy"
+    "affinity-v3"
   ];
   filterArmUnsupported = pkg: !(pkgs.stdenv.isAarch64 && builtins.elem pkg armUnsupported);
 

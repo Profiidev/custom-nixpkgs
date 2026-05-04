@@ -4,4 +4,5 @@
   "quickshell"
   "vicinae"
   "wayscriber-configurator"
+  "affinity-v3"
 ]
