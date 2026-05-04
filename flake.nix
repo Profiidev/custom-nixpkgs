@@ -13,6 +13,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    affinity-nix.url = "github:mrshmllow/affinity-nix";
 
     vicinae = {
       url = "github:vicinaehq/vicinae";
@@ -59,6 +60,7 @@
           externalOverlays = [
             inputs.vicinae.overlays.default
             inputs.noctalia.overlays.default
+            inputs.affinity-nix.overlays.default
           ];
 
           localPkgs = {
