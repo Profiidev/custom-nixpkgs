@@ -3,9 +3,13 @@
 
   nixConfig = {
     extra-substituters = [
+      "https://cache.garnix.io"
+      "https://nix-community.cachix.org"
       "https://projects.cache.profidev.io"
     ];
     extra-trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "profidev.cachix.org:tg4xEn64UMdvA5jJYT8omo/CQHk8+spLyeGT2YAku70="
     ];
   };
