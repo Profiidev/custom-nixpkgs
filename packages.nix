@@ -8,4 +8,5 @@
   "hyprland"
   "hyprgrass"
   "hyprgrass-pulse"
+  "xdg-desktop-portal-hyprland"
 ]

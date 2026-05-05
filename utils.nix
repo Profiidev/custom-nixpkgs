@@ -22,6 +22,7 @@ let
     "hyprland"
     "hyprgrass"
     "hyprgrass-pulse"
+    "xdg-desktop-portal-hyprland"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 

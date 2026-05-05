@@ -80,6 +80,7 @@
             wayscriber = inputs.wayscriber.packages.${system}.default;
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
+            xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
             hyprgrass = inputs.hyprgrass.packages.${system}.default;
             hyprgrass-pulse = inputs.hyprgrass.packages.${system}.hyprgrass-pulse;
           };
