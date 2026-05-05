@@ -6,7 +6,7 @@
 }:
 
 (mkVicinaeExtension {
-  version = "0.1.0";
+  version = "0.1.1";
   pname = "zed-recent-projects-vicinae-extension";
 
   src = sources.zedRecentProjectsRaycastExtension;

@@ -588,7 +588,7 @@ index 1ca5b1dd2..9df2d6ba6 100644
          setTimeout(revalidate, 200);
          await closeMainWindow();
 -        await openWithZedCli(cliPath, entry.paths);
-+        await openWithZedCli(cliPath, [entry.uri]);
++        await openWithZedCli(cliPath, [entry.uri], true);
        } catch (error) {
          await showToast({
            style: Toast.Style.Failure,
@@ -597,7 +597,7 @@ index 1ca5b1dd2..9df2d6ba6 100644
        setTimeout(revalidate, 200);
        await closeMainWindow();
 -      await openWithZedCli(cliPath!, [entry.paths[0]]);
-+      await openWithZedCli(cliPath!, [entry.uri]);
++      await openWithZedCli(cliPath!, [entry.uri], true);
      };
      return <Action title="Open in Zed" icon={zedIcon} onAction={openSingleFolder} />;
    }
