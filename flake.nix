@@ -6,11 +6,13 @@
       "https://cache.garnix.io"
       "https://nix-community.cachix.org"
       "https://projects.cache.profidev.io"
+      "https://hyprland.cachix.org"
     ];
     extra-trusted-public-keys = [
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "profidev.cachix.org:tg4xEn64UMdvA5jJYT8omo/CQHk8+spLyeGT2YAku70="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
   };
 
@@ -18,6 +20,12 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     affinity-nix.url = "github:mrshmllow/affinity-nix";
+    hyprland.url = "github:hyprwm/Hyprland";
+
+    hyprgrass = {
+      url = "github:horriblename/hyprgrass";
+      inputs.hyprland.follows = "hyprland";
+    };
 
     vicinae = {
       url = "github:vicinaehq/vicinae";
@@ -71,6 +79,10 @@
             bun2nix = inputs.bun2nix.packages.${system}.default;
             wayscriber = inputs.wayscriber.packages.${system}.default;
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
+            hyprland = inputs.hyprland.packages.${system}.hyprland;
+            xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
+            hyprgrass = inputs.hyprgrass.packages.${system}.default;
+            hyprgrass-pulse = inputs.hyprgrass.packages.${system}.hyprgrass-pulse;
           };
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;
@@ -118,6 +130,7 @@
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
         noctalia = inputs.noctalia;
+        hyprland = inputs.hyprland;
       }
     );
 }
