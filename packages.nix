@@ -5,4 +5,7 @@
   "vicinae"
   "wayscriber-configurator"
   "affinity-v3"
+  "hyprland"
+  "hyprgrass"
+  "hyprgrass-pulse"
 ]

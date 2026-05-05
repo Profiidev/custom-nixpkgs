@@ -19,6 +19,9 @@ let
     "wayscriber"
     "wayscriber-configurator"
     "affinity-v3"
+    "hyprland"
+    "hyprgrass"
+    "hyprgrass-pulse"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
