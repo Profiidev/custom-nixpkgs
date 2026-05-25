@@ -21,7 +21,7 @@ rustPlatform.buildRustPackage {
     #hash = lib.fakeHash;
   };
 
-  cargoHash = "sha256-SRkvBsb86HmDjRB3rU2Ya6A8FJS59OSIoyor97MpT9M=";
+  cargoHash = "sha256-Fgs6oZwpR6bOl3UjeaC0eT1nUmq+Ky/4AswvA0bjuOc=";
   #cargoHash = lib.fakeHash;
 
   postPatch = ''

@@ -20,7 +20,7 @@ rustPlatform.buildRustPackage {
     hash = "sha256-v2pmOQt5xr6iHGnJ8lz8f1hJnofmEsAWvh/I2BykI+k=";
   };
 
-  cargoHash = "sha256-JBCpSOZp+ItyUB+yAxH+37EAo851JXMafjUb+SrIMyw=";
+  cargoHash = "sha256-taK/8LqcB3xNS4e2tQAcco4Mk21r7SUTytVnKm8Lunc=";
 
   nativeBuildInputs = [
     libcosmicAppHook

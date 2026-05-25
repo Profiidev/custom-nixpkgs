@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage {
     hash = "sha256-t+8IrQL1zq9gKlVwwgBL2Qkh2LInDhqP9C/5OvRYjNw=";
   };
 
-  cargoHash = "sha256-WofBwEM85rvwxHVM6CMC08INLFV2UNdjti3bE0SLnj4=";
+  cargoHash = "sha256-WAal16m89/Hjqr1keSPO8YAC7VfLIRUAxa/n6vKoGxg=";
 
   postPatch = ''
     sed -i 's/sudo //g' justfile
