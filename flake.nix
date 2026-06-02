@@ -67,7 +67,7 @@
           system = prev.stdenv.hostPlatform.system;
 
           mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
-          mkVicinaeExtension = inputs.vicinae.packages.${system}.mkVicinaeExtension;
+          mkVicinaeExtension = inputs.vicinae.lib.${system}.mkVicinaeExtension;
 
           externalOverlays = [
             inputs.vicinae.overlays.default
