@@ -48,6 +48,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     wayscriber = {
       url = "github:devmobasa/wayscriber";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -73,6 +78,7 @@
             inputs.vicinae.overlays.default
             inputs.noctalia-legacy.overlays.default
             inputs.noctalia.overlays.default
+            inputs.noctalia-greeter.overlays.default
             inputs.affinity-nix.overlays.default
           ];
 
@@ -130,6 +136,7 @@
         vicinae-extensions = inputs.vicinae-extensions;
         noctalia-leagcy = inputs.noctalia-legacy;
         noctalia = inputs.noctalia;
+        noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
       }
     );

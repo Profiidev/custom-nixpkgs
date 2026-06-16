@@ -8,4 +8,5 @@
   "hyprland"
   "xdg-desktop-portal-hyprland"
   "noctalia"
+  "noctalia-greeter"
 ]

@@ -22,6 +22,7 @@ let
     "hyprland"
     "xdg-desktop-portal-hyprland"
     "noctalia"
+    "noctalia-greeter"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
