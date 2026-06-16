@@ -24,6 +24,7 @@ let
     "noctalia"
     "noctalia-greeter"
     "virtualbox"
+    "linuxPackages_latest.virtualbox"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
@@ -32,6 +33,7 @@ let
     "moondeck-buddy"
     "affinity-v3"
     "virtualbox"
+    "linuxPackages_latest.virtualbox"
   ];
   filterArmUnsupported = pkg: !(pkgs.stdenv.isAarch64 && builtins.elem pkg armUnsupported);
 

@@ -126,7 +126,7 @@
           packages = builtins.listToAttrs (
             map (pkg: {
               name = pkg;
-              value = pkgs.${pkg};
+              value = pkgs.lib.attrByPath (pkgs.lib.splitString "." pkg) null pkgs;
             }) (utils.packageNames ++ utils.overlayNames ++ utils.buildPackageNames)
           );
 
