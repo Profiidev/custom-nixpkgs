@@ -109,7 +109,11 @@
         let
           pkgs = import nixpkgs {
             inherit system;
-            config.allowUnfree = true;
+            config = {
+              allowUnfree = true;
+              allowUnfreePredicate = _: true;
+              cudaSupport = true;
+            };
             overlays = [
               overlay
             ];
@@ -122,7 +126,7 @@
           packages = builtins.listToAttrs (
             map (pkg: {
               name = pkg;
-              value = pkgs.${pkg};
+              value = pkgs.lib.attrByPath (pkgs.lib.splitString "." pkg) null pkgs;
             }) (utils.packageNames ++ utils.overlayNames ++ utils.buildPackageNames)
           );
 
