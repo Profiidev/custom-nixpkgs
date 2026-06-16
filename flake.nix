@@ -134,7 +134,7 @@
 
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
-        noctalia-leagcy = inputs.noctalia-legacy;
+        noctalia-legacy = inputs.noctalia-legacy;
         noctalia = inputs.noctalia;
         noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
