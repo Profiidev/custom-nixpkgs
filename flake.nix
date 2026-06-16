@@ -22,11 +22,6 @@
     affinity-nix.url = "github:mrshmllow/affinity-nix";
     hyprland.url = "github:hyprwm/Hyprland";
 
-    hyprgrass = {
-      url = "github:horriblename/hyprgrass";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     vicinae = {
       url = "github:vicinaehq/vicinae";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -81,8 +76,6 @@
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
-            hyprgrass = inputs.hyprgrass.packages.${system}.default;
-            hyprgrass-pulse = inputs.hyprgrass.packages.${system}.hyprgrass-pulse;
           };
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;

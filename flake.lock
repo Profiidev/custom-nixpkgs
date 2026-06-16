@@ -400,31 +400,6 @@
         "type": "github"
       }
     },
-    "hyprgrass": {
-      "inputs": {
-        "hyprland": [
-          "hyprland"
-        ],
-        "nixpkgs": [
-          "hyprgrass",
-          "hyprland",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1781203475,
-        "narHash": "sha256-xZYSKhlFtPTHyWTplInw1jPi3e7sIekAIS7JqvAag5I=",
-        "owner": "horriblename",
-        "repo": "hyprgrass",
-        "rev": "51b27422c65ee2636aa3b7664b41f9221295f708",
-        "type": "github"
-      },
-      "original": {
-        "owner": "horriblename",
-        "repo": "hyprgrass",
-        "type": "github"
-      }
-    },
     "hyprland": {
       "inputs": {
         "aquamarine": "aquamarine",
@@ -903,7 +878,6 @@
         "affinity-nix": "affinity-nix",
         "bun2nix": "bun2nix",
         "flake-utils": "flake-utils",
-        "hyprgrass": "hyprgrass",
         "hyprland": "hyprland",
         "nixpkgs": "nixpkgs_5",
         "noctalia": "noctalia",
