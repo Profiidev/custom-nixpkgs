@@ -109,7 +109,11 @@
         let
           pkgs = import nixpkgs {
             inherit system;
-            config.allowUnfree = true;
+            config = {
+              allowUnfree = true;
+              allowUnfreePredicate = _: true;
+              cudaSupport = true;
+            };
             overlays = [
               overlay
             ];
