@@ -9,4 +9,5 @@
   "xdg-desktop-portal-hyprland"
   "noctalia"
   "noctalia-greeter"
+  "virtualbox"
 ]
