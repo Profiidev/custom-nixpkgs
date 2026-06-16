@@ -20,9 +20,9 @@ let
     "wayscriber-configurator"
     "affinity-v3"
     "hyprland"
-    "hyprgrass"
-    "hyprgrass-pulse"
     "xdg-desktop-portal-hyprland"
+    "noctalia"
+    "noctalia-greeter"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
