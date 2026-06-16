@@ -21,6 +21,7 @@ let
     "affinity-v3"
     "hyprland"
     "xdg-desktop-portal-hyprland"
+    "noctalia"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 

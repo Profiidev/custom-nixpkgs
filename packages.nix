@@ -7,4 +7,5 @@
   "affinity-v3"
   "hyprland"
   "xdg-desktop-portal-hyprland"
+  "noctalia"
 ]

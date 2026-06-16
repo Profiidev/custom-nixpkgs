@@ -776,6 +776,26 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781581126,
+        "narHash": "sha256-GXzO08gNKZsEuVgMhIfuUvc5G4Xh1rNot8KWjZsKNos=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "de82488dc60db736acd5bf95fb448405ea99f404",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "type": "github"
+      }
+    },
+    "noctalia-legacy": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
         ],
         "noctalia-qs": "noctalia-qs"
       },
@@ -797,7 +817,7 @@
     "noctalia-qs": {
       "inputs": {
         "nixpkgs": [
-          "noctalia",
+          "noctalia-legacy",
           "nixpkgs"
         ],
         "systems": "systems_4",
@@ -881,6 +901,7 @@
         "hyprland": "hyprland",
         "nixpkgs": "nixpkgs_5",
         "noctalia": "noctalia",
+        "noctalia-legacy": "noctalia-legacy",
         "vicinae": "vicinae",
         "vicinae-extensions": "vicinae-extensions",
         "wayscriber": "wayscriber"
@@ -1050,7 +1071,7 @@
     "treefmt-nix_3": {
       "inputs": {
         "nixpkgs": [
-          "noctalia",
+          "noctalia-legacy",
           "noctalia-qs",
           "nixpkgs"
         ]
