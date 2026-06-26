@@ -25,6 +25,8 @@ let
     "noctalia-greeter"
     "virtualbox"
     "linuxPackages_latest.virtualbox"
+    "gpu-screen-recorder-notification"
+    "gpu-screen-recorder-ui"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
@@ -34,6 +36,8 @@ let
     "affinity-v3"
     "virtualbox"
     "linuxPackages_latest.virtualbox"
+    "gpu-screen-recorder-notification"
+    "gpu-screen-recorder-ui"
   ];
   filterArmUnsupported = pkg: !(pkgs.stdenv.isAarch64 && builtins.elem pkg armUnsupported);
 
