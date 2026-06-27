@@ -27,6 +27,9 @@ let
     "linuxPackages_latest.virtualbox"
     "gpu-screen-recorder-notification"
     "gpu-screen-recorder-ui"
+    "gimp"
+    "ffmpeg-full"
+    "ollama"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
