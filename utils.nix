@@ -30,6 +30,8 @@ let
     "gimp"
     "ffmpeg-full"
     "ollama"
+    "obs-studio"
+    "kdePackages.kdenlive"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 

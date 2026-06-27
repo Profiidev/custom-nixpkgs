@@ -12,4 +12,6 @@
   "ollama"
   "gimp"
   "ffmpeg-full"
+  "kdePackages.kdenlive"
+  "obs-studio"
 ]
