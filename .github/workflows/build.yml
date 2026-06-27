@@ -88,7 +88,13 @@ jobs:
 
       - name: Push to Cache
         if: github.event_name != 'pull_request'
-        run: hibernation push projects $(readlink result)
+        run: |
+          DIRS="result result-bin result-man result-dev result-lib result-doc result-include result-info result-static"
+          for dir in $DIRS; do
+            if [ -e $dir ]; then
+              hibernation push projects $(readlink $dir)
+            fi
+          done
 
   build-gather:
     needs:
