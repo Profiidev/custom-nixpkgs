@@ -9,4 +9,7 @@
   "xdg-desktop-portal-hyprland"
   "noctalia"
   "noctalia-greeter"
+  "ollama"
+  "gimp"
+  "ffmpeg-full"
 ]

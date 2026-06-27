@@ -14,6 +14,8 @@
       "profidev.cachix.org:tg4xEn64UMdvA5jJYT8omo/CQHk8+spLyeGT2YAku70="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
+    connect-timeout = 5;
+    fallback = true;
   };
 
   inputs = {
