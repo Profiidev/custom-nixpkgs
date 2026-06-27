@@ -84,7 +84,7 @@ jobs:
           signing-key: ${{ secrets.HIBERNATION_SIGNING_KEY }}
 
       - name: Build package
-        run: nix build .#${{ matrix.package }} -Lv --print-out-paths --accept-flake-config
+        run: nix build .#\"${{ matrix.package }}\" -Lv --print-out-paths --accept-flake-config
 
       - name: Push to Cache
         if: github.event_name != 'pull_request'
