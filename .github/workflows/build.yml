@@ -69,6 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.prepare-build.outputs.packages != '[]' && needs.prepare-build.outputs.packages != '' }}
     strategy:
+      fail-fast: false
       matrix:
         package: ${{ fromJson(needs.prepare-build.outputs.packages) }}
     steps:
