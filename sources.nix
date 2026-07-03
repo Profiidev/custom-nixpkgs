@@ -35,15 +35,9 @@ in
   qrCodeGeneratorRaycastExtension =
     raycastExtension "qrcode-generator" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-6gmc96Y5zTRzTcGvjQsOmn/P89HV8PmmpTDxdK7oYD0=";
-  unixTimestampRaycastExtension =
-    raycastExtension "unix-timestamp" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
-      "sha256-lhQ2Wjb49SpOuH4Ov6/twyrD1WiTqQryVpnX4sB6QSI=";
   homeAssistantRaycastExtension =
     raycastExtension "homeassistant" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-lSEtzYw96imTNHNW/VxxZZxyhOP6q490YnV8fYdpt3Y=";
-  searchMdnRaycastExtension =
-    raycastExtension "search-mdn" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
-      "sha256-FNRbJuyBqM+k6SNkEzdMz9vfNsNgiq1kdKRlzPDSMsg=";
   jwtDecoderRaycastExtension =
     raycastExtension "jwt-decoder" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-YD8aWcJSlEWs/Rwou9AW46o8NMEEsq/9e0ujWQpPWek=";
