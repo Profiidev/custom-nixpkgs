@@ -6,7 +6,7 @@
 
 (mkRayCastExtension {
   version = "0.1.0";
-  name = "spotify-player-vicinae-extension";
+  name = "unix-timestamp";
 
-  src = sources.spotifyPlayerRaycastExtension;
+  src = sources.unixTimestampRaycastExtension;
 })

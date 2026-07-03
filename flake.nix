@@ -75,6 +75,13 @@
 
           mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
           mkVicinaeExtension = inputs.vicinae.lib.${system}.mkVicinaeExtension;
+          # Raycast extensions build with `ray build`; the default buildPhase's
+          # --out flag doesn't reach ray, so pin the -o output flag here once.
+          mkRayCastExtension =
+            args:
+            (mkVicinaeExtension args).overrideAttrs (_: {
+              buildPhase = "npm run build -- -o=$out";
+            });
 
           externalOverlays = [
             inputs.vicinae.overlays.default
@@ -126,6 +133,7 @@
           inherit
             mkBunDerivation
             mkVicinaeExtension
+            mkRayCastExtension
             final
             ;
           prev = (prev // externalPkgs // localPkgs);
