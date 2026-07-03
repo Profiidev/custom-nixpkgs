@@ -1,15 +1,12 @@
 {
-  mkVicinaeExtension,
+  mkRayCastExtension,
   sources,
   ...
 }:
 
-(mkVicinaeExtension {
+(mkRayCastExtension {
   version = "0.1.0";
-  pname = "google-vicinae-extension";
+  name = "google-vicinae-extension";
 
   src = sources.googleSearchRaycastExtension;
-}).overrideAttrs
-  (oldAttrs: {
-    buildPhase = "npm run build -- -o=$out";
-  })
+})

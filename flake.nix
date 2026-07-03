@@ -75,6 +75,13 @@
 
           mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
           mkVicinaeExtension = inputs.vicinae.lib.${system}.mkVicinaeExtension;
+          # Raycast extensions build with `ray build`; the default buildPhase's
+          # --out flag doesn't reach ray, so pin the -o output flag here once.
+          mkRayCastExtension =
+            args:
+            (mkVicinaeExtension args).overrideAttrs (_: {
+              buildPhase = "npm run build -- -o=$out";
+            });
 
           externalOverlays = [
             inputs.vicinae.overlays.default
@@ -90,7 +97,33 @@
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
-          };
+          }
+          // (prev.lib.foldl
+            (
+              acc: pkg:
+              acc
+              // {
+                "vicinae-${pkg}" = inputs.vicinae-extensions.packages.${system}.${pkg};
+              }
+            )
+            { }
+            [
+              "nix"
+              "power-profile"
+              "it-tools"
+              "port-killer"
+              "bluetooth"
+              "hypr-keybinds"
+              "vscode-recents"
+              "zed-recents"
+              "protondb-search"
+              "jetbrains-recent-projects"
+              "hyprland-monitors"
+              "hypr"
+              "timer"
+              "npm"
+            ]
+          );
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;
         in
@@ -100,6 +133,7 @@
           inherit
             mkBunDerivation
             mkVicinaeExtension
+            mkRayCastExtension
             final
             ;
           prev = (prev // externalPkgs // localPkgs);

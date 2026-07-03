@@ -6,7 +6,7 @@
 
 (mkRayCastExtension {
   version = "0.1.0";
-  name = "spotify-player-vicinae-extension";
+  name = "lucide-icons-search";
 
-  src = sources.spotifyPlayerRaycastExtension;
+  src = sources.lucideIconsSearchRaycastExtension;
 })

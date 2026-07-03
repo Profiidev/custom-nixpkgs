@@ -3,6 +3,7 @@
   prev,
   mkBunDerivation,
   mkVicinaeExtension,
+  mkRayCastExtension,
   ...
 }:
 
@@ -17,7 +18,12 @@ in
   map (pkg: {
     name = pkg;
     value = final.callPackage ./packages/${pkg}.nix {
-      inherit mkBunDerivation mkVicinaeExtension sources;
+      inherit
+        mkBunDerivation
+        mkVicinaeExtension
+        mkRayCastExtension
+        sources
+        ;
     };
   }) (utils.packageNames)
 )

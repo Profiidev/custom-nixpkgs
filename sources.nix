@@ -29,4 +29,25 @@ in
   googleSearchRaycastExtension =
     raycastExtension "google-search" "3745b33cbc5ae69d99eb0ded423eab1b494272a0"
       "sha256-JQwPpzeHKalstRNtTlX00/Sv2VR/7DIRtOQcNCgSaL8=";
+  randomDataGeneratorRaycastExtension =
+    raycastExtension "random-data-generator" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-taa3pg69aVF0GO7jXnR2gpRZVBJUqnlYlkPxaYT21qI=";
+  qrCodeGeneratorRaycastExtension =
+    raycastExtension "qrcode-generator" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-6gmc96Y5zTRzTcGvjQsOmn/P89HV8PmmpTDxdK7oYD0=";
+  homeAssistantRaycastExtension =
+    raycastExtension "homeassistant" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-lSEtzYw96imTNHNW/VxxZZxyhOP6q490YnV8fYdpt3Y=";
+  jwtDecoderRaycastExtension =
+    raycastExtension "jwt-decoder" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-YD8aWcJSlEWs/Rwou9AW46o8NMEEsq/9e0ujWQpPWek=";
+  canIUseRaycastExtension =
+    raycastExtension "can-i-use" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-KKuYr34JG6V0Dn0Ekf/RNoU7tCPDgg8WrYASAmiuO4A=";
+  lucideIconsSearchRaycastExtension =
+    raycastExtension "lucide-icons" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-kS92gdtBzPf9SOdE6OtGDf2Fo69tIlusDGOwaEcwPbo=";
+  whoisRaycastExtension =
+    raycastExtension "whois" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-tep/2A/dQUfY8+nJqugwm0ZLoALULmcraCo3hrP4IZM=";
 }
