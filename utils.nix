@@ -32,6 +32,7 @@ let
     "ollama"
     "obs-studio"
     "kdePackages.kdenlive"
+    "strix"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 

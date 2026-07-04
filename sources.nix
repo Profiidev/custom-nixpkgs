@@ -15,6 +15,16 @@ let
         ];
       }
     }/extensions/${name}";
+
+  pythonWheel =
+    pname: version: hash:
+    pkgs.python3Packages.fetchPypi {
+      inherit version hash;
+      pname = builtins.replaceStrings [ "-" ] [ "_" ] pname;
+      format = "wheel";
+      dist = "py3";
+      python = "py3";
+    };
 in
 {
   spotifyPlayerRaycastExtension =
@@ -44,4 +54,13 @@ in
   whoisRaycastExtension =
     raycastExtension "whois" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-tep/2A/dQUfY8+nJqugwm0ZLoALULmcraCo3hrP4IZM=";
+  searchMdnRaycastExtension =
+    raycastExtension "search-mdn" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-FNRbJuyBqM+k6SNkEzdMz9vfNsNgiq1kdKRlzPDSMsg=";
+  caidoServerAuthWheel =
+    pythonWheel "caido-server-auth" "0.1.2"
+      "sha256-QMbNNyjiTN/0AsTvpdj1W/bmzHOsAWm96hrR40+v+P8=";
+  caidoSdkClientWheel =
+    pythonWheel "caido-sdk-client" "0.2.0"
+      "sha256-vFc2UWgcCT7pZjx5JNONUiqJzqYOLOANNLqbApQrHaE=";
 }
