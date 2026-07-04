@@ -57,6 +57,9 @@ in
   searchMdnRaycastExtension =
     raycastExtension "search-mdn" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-FNRbJuyBqM+k6SNkEzdMz9vfNsNgiq1kdKRlzPDSMsg=";
+  protonPassRaycastExtension =
+    raycastExtension "proton-pass" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+      "sha256-kfNocAJ8uxMKW7NTgevPcA3G8Rg+I79JPJli5Z9YYlc=";
   caidoServerAuthWheel =
     pythonWheel "caido-server-auth" "0.1.2"
       "sha256-QMbNNyjiTN/0AsTvpdj1W/bmzHOsAWm96hrR40+v+P8=";
