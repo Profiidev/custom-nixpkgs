@@ -112,7 +112,6 @@
               "power-profile"
               "it-tools"
               "port-killer"
-              "bluetooth"
               "hypr-keybinds"
               "vscode-recents"
               "zed-recents"
