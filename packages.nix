@@ -18,7 +18,6 @@
   "vicinae-power-profile"
   "vicinae-it-tools"
   "vicinae-port-killer"
-  "vicinae-bluetooth"
   "vicinae-hypr-keybinds"
   "vicinae-vscode-recents"
   "vicinae-zed-recents"
