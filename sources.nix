@@ -54,9 +54,6 @@ in
   whoisRaycastExtension =
     raycastExtension "whois" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-tep/2A/dQUfY8+nJqugwm0ZLoALULmcraCo3hrP4IZM=";
-  searchMdnRaycastExtension =
-    raycastExtension "search-mdn" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
-      "sha256-FNRbJuyBqM+k6SNkEzdMz9vfNsNgiq1kdKRlzPDSMsg=";
   protonPassRaycastExtension =
     raycastExtension "proton-pass" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
       "sha256-kfNocAJ8uxMKW7NTgevPcA3G8Rg+I79JPJli5Z9YYlc=";
@@ -66,4 +63,16 @@ in
   caidoSdkClientWheel =
     pythonWheel "caido-sdk-client" "0.2.0"
       "sha256-vFc2UWgcCT7pZjx5JNONUiqJzqYOLOANNLqbApQrHaE=";
+
+  searchMdnRaycastExtension = pkgs.applyPatches {
+    name = "search-mdn-src";
+    src =
+      raycastExtension "search-mdn" "eb6d5bf5175c789b9f2455ba4730b4f476b7ce0b"
+        "sha256-FNRbJuyBqM+k6SNkEzdMz9vfNsNgiq1kdKRlzPDSMsg=";
+    patches = [ ./patches/search-mdn.patch ];
+
+    outputHashMode = "recursive";
+    outputHashAlgo = "sha256";
+    outputHash = "sha256-aTtVzjAQ78k8fR6xc1i6jxXY35ZtMfTStnKj/Heh6/k=";
+  };
 }
