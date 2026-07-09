@@ -2,3 +2,4 @@
 /result-man
 /result-bin
 packages/rpcsx.nix
+/test/
