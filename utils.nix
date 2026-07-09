@@ -33,6 +33,7 @@ let
     "obs-studio"
     "kdePackages.kdenlive"
     "strix"
+    "claude-desktop"
   ];
   filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
 
