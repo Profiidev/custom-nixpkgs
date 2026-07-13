@@ -137,9 +137,15 @@
             ;
           prev = (prev // externalPkgs // localPkgs);
         });
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
     in
     (
-      flake-utils.lib.eachDefaultSystem (
+      flake-utils.lib.eachSystem systems (
         system:
         let
           pkgs = import nixpkgs {
