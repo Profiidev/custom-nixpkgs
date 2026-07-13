@@ -92,6 +92,7 @@
           ];
 
           localPkgs = {
+            vicinae-with-soulver = inputs.vicinae.packages.${system}.with-soulver;
             bun2nix = inputs.bun2nix.packages.${system}.default;
             wayscriber = inputs.wayscriber.packages.${system}.default;
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
