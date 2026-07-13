@@ -2,7 +2,6 @@
   "bun2nix"
   "noctalia-qs"
   "quickshell"
-  "vicinae"
   "wayscriber-configurator"
   "affinity-v3"
   "hyprland"
@@ -27,4 +26,5 @@
   "vicinae-hypr"
   "vicinae-timer"
   "vicinae-npm"
+  "vicinae-with-soulver"
 ]
