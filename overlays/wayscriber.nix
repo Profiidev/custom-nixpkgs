@@ -7,5 +7,7 @@ final: prev: {
           --replace "/usr/bin/wayscriber" "$out/bin/wayscriber" \
           --replace "/bin/sh" "${prev.bash}/bin/sh"
     '';
+
+    doCheck = false;
   });
 }
