@@ -1,4 +1,4 @@
-{ ayu-theme-gtk, ... }:
+{ ayu-theme-gtk }:
 
 let
   gtk4CssOverride = ../assets/ayu-dark-gtk4.css.asset;

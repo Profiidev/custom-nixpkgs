@@ -1,7 +1,6 @@
 {
   mkRayCastExtension,
   sources,
-  ...
 }:
 
 mkRayCastExtension {

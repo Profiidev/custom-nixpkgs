@@ -2,7 +2,6 @@
   lib,
   mkBunDerivation,
   fetchFromGitHub,
-  ...
 }:
 
 let

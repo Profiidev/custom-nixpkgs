@@ -3,7 +3,6 @@
   buildNpmPackage,
   fetchFromGitHub,
   bun,
-  ...
 }:
 
 buildNpmPackage rec {

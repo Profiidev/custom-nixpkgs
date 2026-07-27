@@ -4,7 +4,6 @@
   fetchFromGitHub,
   nix-update-script,
   sources,
-  ...
 }:
 
 let

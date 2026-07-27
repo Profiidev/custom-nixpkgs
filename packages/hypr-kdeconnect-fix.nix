@@ -8,7 +8,6 @@
   wayland,
   libei,
   qt6,
-  ...
 }:
 
 stdenv.mkDerivation {

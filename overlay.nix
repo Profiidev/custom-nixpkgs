@@ -17,13 +17,16 @@ in
 // builtins.listToAttrs (
   map (pkg: {
     name = pkg;
-    value = final.callPackage ./packages/${pkg}.nix {
-      inherit
-        mkBunDerivation
-        mkVicinaeExtension
-        mkRayCastExtension
-        sources
-        ;
-    };
+    value = final.lib.callPackageWith (
+      final
+      // {
+        inherit
+          mkBunDerivation
+          mkVicinaeExtension
+          mkRayCastExtension
+          sources
+          ;
+      }
+    ) ./packages/${pkg}.nix { };
   }) (utils.packageNames)
 )
