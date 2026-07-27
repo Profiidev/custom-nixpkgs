@@ -20,7 +20,6 @@
   libcap_ng,
   lib,
   libGL,
-  ...
 }:
 
 stdenv.mkDerivation rec {

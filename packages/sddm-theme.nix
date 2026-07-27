@@ -2,7 +2,6 @@
   stdenv,
   fetchFromGitHub,
   bibata-cursors,
-  ...
 }:
 
 stdenv.mkDerivation {

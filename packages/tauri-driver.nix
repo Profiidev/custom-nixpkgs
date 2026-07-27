@@ -2,7 +2,6 @@
   rustPlatform,
   fetchCrate,
   lib,
-  ...
 }:
 
 rustPlatform.buildRustPackage rec {

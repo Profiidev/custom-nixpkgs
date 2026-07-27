@@ -1,5 +1,7 @@
 /result
 /result-man
 /result-bin
-packages/rpcsx.nix
 /test/
+
+packages/rpcsx.nix
+packages/hollow.nix

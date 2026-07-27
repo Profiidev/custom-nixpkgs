@@ -30,7 +30,6 @@
   wayland-scanner,
   wayland,
   wrapperDir ? "/run/wrappers/bin",
-  ...
 }:
 
 stdenv.mkDerivation (finalAttrs: {

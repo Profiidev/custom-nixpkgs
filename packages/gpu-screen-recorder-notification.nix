@@ -17,7 +17,6 @@
   stdenv,
   wayland-scanner,
   wayland,
-  ...
 }:
 
 stdenv.mkDerivation (finalAttrs: {

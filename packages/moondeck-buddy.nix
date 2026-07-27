@@ -11,7 +11,6 @@
   libxrandr,
   steam,
   useNixSteam ? true,
-  ...
 }:
 
 let
