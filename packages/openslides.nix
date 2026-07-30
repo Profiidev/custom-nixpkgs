@@ -50,7 +50,7 @@ rustPlatform.buildRustPackage rec {
   ];
 
   bunDeps = bun2nix.fetchBunDeps {
-    bunNix = ./open-slides/bun.nix;
+    bunNix = ./openslides/bun.nix;
   };
 
   doCheck = false;
