@@ -19,7 +19,7 @@ buildNpmPackage (finalAttrs: {
   };
 
   dontNpmBuild = true;
-  npmDepsHash = lib.fakeHash;
+  npmDepsHash = "sha256-uJR7EA8JZx6qKnn7DqValPbgJd3eVvT2uHqa+k49yl4=";
 
   passthru.updateScript = nix-update-script { };
 

@@ -17,8 +17,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "gfhdhytghd";
     repo = "hypr-kdeconnect-fix";
-    rev = "ea55f66c8238235983d60d381bf2abe1fed50043";
-    hash = "sha256-OW18+pO92XvlTLrHo+S9/EVUophr5Dl1GdGJcmVAq/o=";
+    rev = "e86a0fb17826cb8ea987665ded7428534e4a1a9d";
+    hash = "sha256-VcXxVtlnkPjO6l0ky/n+0qa87Uc3c8hRM0twfgl+AiM=";
   };
 
   strictDeps = true;
