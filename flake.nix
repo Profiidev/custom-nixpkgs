@@ -87,7 +87,7 @@
     };
 
     bun2nix = {
-      url = "github:baileylutcd/bun2nix?rev=72c047583edc83e2c2eada6e348dfaa622781331";
+      url = "github:nix-community/bun2nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         treefmt-nix.follows = "treefmt-nix";
@@ -159,6 +159,7 @@
             inputs.noctalia.overlays.default
             inputs.noctalia-greeter.overlays.default
             inputs.affinity-nix.overlays.default
+            inputs.bun2nix.overlays.default
           ];
 
           localPkgs = {
