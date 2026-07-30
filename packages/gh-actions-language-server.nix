@@ -1,35 +1,33 @@
 {
   lib,
-  mkBunDerivation,
   fetchFromGitHub,
+  nix-update-script,
+  buildNpmPackage,
 }:
 
-let
-  bunLock = ./gh-actions-language-server/bun.lock;
-in
-mkBunDerivation {
-  pname = "gh-actions-language-server";
-  version = "unstable-2025-01-10";
+buildNpmPackage (finalAttrs: {
+  pname = "languageservices";
+  version = "0.3.60";
+  __structuredAttrs = true;
+  strictDeps = true;
 
   src = fetchFromGitHub {
-    owner = "lttb";
-    repo = "gh-actions-language-server";
-    rev = "0287d3081d7b74fef88824ca3bd6e9a44323a54d";
-    hash = "sha256-ZWO5G33FXGO57Zca5B5i8zaE8eFbBCrEtmwwR3m1Px4=";
+    owner = "actions";
+    repo = "languageservices";
+    tag = "release-v${finalAttrs.version}";
+    hash = "sha256-YXVgYGa7LFEfDuIAIeEwYJD+45l+ytuWSZ+yPlWMJdg=";
   };
 
-  postPatch = ''
-    cp ${bunLock} ./bun.lock
-    rm ./.bun-version
-  '';
+  dontNpmBuild = true;
+  npmDepsHash = lib.fakeHash;
 
-  index = "index.js";
-  bunNix = ./gh-actions-language-server/bun.nix;
+  passthru.updateScript = nix-update-script { };
 
-  meta = with lib; {
-    description = "GH actions lsp";
-    homepage = "https://github.com/lttb/gh-actions-language-server";
-    license = licenses.mit;
-    maintainers = [ ];
+  meta = {
+    description = "Language services for GitHub Actions workflows and expressions";
+    homepage = "https://github.com/actions/languageservices";
+    license = lib.licenses.mit;
+    mainProgram = "actions-languageserver";
+    platforms = lib.platforms.all;
   };
-}
+})
