@@ -1,0 +1,22 @@
+diff --git a/src/connection.ts b/src/connection.ts
+index 179b05c..88e3426 100644
+--- a/src/connection.ts
++++ b/src/connection.ts
+@@ -141,7 +141,7 @@ export function initConnection(connection: Connection) {
+     };
+ 
+     const result = await validate(textDocument, config);
+-    await connection.sendDiagnostics({uri: textDocument.uri, diagnostics: result});
++    await connection.sendDiagnostics({uri: textDocument.uri, diagnostics: result as any});
+   }
+ 
+   connection.onCompletion(async ({position, textDocument}: TextDocumentPositionParams): Promise<CompletionItem[]> => {
+@@ -200,7 +200,7 @@ export function initConnection(connection: Connection) {
+       diagnostics: params.context.diagnostics,
+       only: params.context.only,
+       featureFlags
+-    });
++    }) as any;
+   });
+ 
+   // Make the text document manager listen on the connection
