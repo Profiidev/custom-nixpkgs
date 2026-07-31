@@ -19,6 +19,7 @@
   "vicinae-port-killer"
   "vicinae-hypr-keybinds"
   "vicinae-vscode-recents"
+  "vicinae-zed-recents"
   "vicinae-protondb-search"
   "vicinae-jetbrains-recent-projects"
   "vicinae-hyprland-monitors"
