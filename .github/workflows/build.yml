@@ -19,7 +19,7 @@ jobs:
 
       - id: gen-matrix
         run: |
-          GLOBAL_TRIGGERS=("flake.nix" "flake.lock" "overlay.nix" "utils.nix" "sources.nix")
+          GLOBAL_TRIGGERS=("flake.nix" "flake.lock" "overlay.nix" "utils.nix" "sources.nix" "packages.nix")
           PACKAGE_FILES=$(ls -1 packages/ 2>/dev/null || echo "")
           OVERLAY_FILES=$(ls -1 overlays/ 2>/dev/null || echo "")
 
