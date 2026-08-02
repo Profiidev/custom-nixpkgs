@@ -27,4 +27,6 @@
   "vicinae-timer"
   "vicinae-npm"
   "vicinae-with-soulver"
+  "opencv"
+  "onnxruntime"
 ]
