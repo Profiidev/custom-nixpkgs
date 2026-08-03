@@ -27,4 +27,6 @@
   "vicinae-timer"
   "vicinae-npm"
   "vicinae-with-soulver"
+  "python3Packages.opencv4"
+  "onnxruntime"
 ]
