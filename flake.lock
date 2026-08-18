@@ -69,6 +69,26 @@
         "type": "github"
       }
     },
+    "basalt-launcher": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786664193,
+        "narHash": "sha256-cZP4WDKqpbO4603731e12VA7RREprqoUFmZnNsIcFLE=",
+        "owner": "MegalithOfficial",
+        "repo": "basalt-launcher",
+        "rev": "00b4f9915def3d201e0a411c3b5453940849c683",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MegalithOfficial",
+        "repo": "basalt-launcher",
+        "type": "github"
+      }
+    },
     "bun2nix": {
       "inputs": {
         "flake-parts": "flake-parts_2",
@@ -761,6 +781,7 @@
     "root": {
       "inputs": {
         "affinity-nix": "affinity-nix",
+        "basalt-launcher": "basalt-launcher",
         "bun2nix": "bun2nix",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
