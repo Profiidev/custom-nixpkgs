@@ -35,7 +35,8 @@ let
     "strix"
     "claude-desktop"
   ];
-  filterDarwinUnsupported = pkg: !(pkgs.stdenv.isDarwin && builtins.elem pkg darwinUnsupported);
+  filterDarwinUnsupported =
+    pkg: !(pkgs.stdenv.hostPlatform.isDarwin && builtins.elem pkg darwinUnsupported);
 
   armUnsupported = [
     "nwjs"
@@ -46,7 +47,8 @@ let
     "gpu-screen-recorder-notification"
     "gpu-screen-recorder-ui"
   ];
-  filterArmUnsupported = pkg: !(pkgs.stdenv.isAarch64 && builtins.elem pkg armUnsupported);
+  filterArmUnsupported =
+    pkg: !(pkgs.stdenv.hostPlatform.isAarch64 && builtins.elem pkg armUnsupported);
 
   allOverlayNames = map (pkg: pkgs.lib.removeSuffix ".nix" pkg) (
     builtins.attrNames (builtins.readDir ./overlays)

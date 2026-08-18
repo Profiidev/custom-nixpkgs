@@ -129,6 +129,11 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
+    basalt-launcher = {
+      url = "github:MegalithOfficial/basalt-launcher";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -169,6 +174,7 @@
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
+            basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
           }
           // (prev.lib.foldl
             (
