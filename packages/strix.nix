@@ -7,6 +7,11 @@
 }:
 
 let
+  # nixpkgs' openai-agents 0.18.1 omits websockets, now a required runtime dep.
+  openai-agents = python3Packages.openai-agents.overridePythonAttrs (old: {
+    dependencies = old.dependencies ++ [ python3Packages.websockets ];
+  });
+
   # Not packaged in nixpkgs; pure-python wheels pulled straight from PyPI.
   caido-server-auth = python3Packages.buildPythonPackage {
     pname = "caido-server-auth";
