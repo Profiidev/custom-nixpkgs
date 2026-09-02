@@ -30,4 +30,5 @@
   "python3Packages.opencv4"
   "onnxruntime"
   "basalt-launcher"
+  "lzbt"
 ]

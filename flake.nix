@@ -134,6 +134,14 @@
       url = "github:MegalithOfficial/basalt-launcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.1.0";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        pre-commit.follows = "git-hooks";
+      };
+    };
   };
 
   outputs =
@@ -175,6 +183,7 @@
             hyprland = inputs.hyprland.packages.${system}.hyprland;
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
             basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
+            lzbt = inputs.lanzaboote.packages.${system}.lzbt;
           }
           // (prev.lib.foldl
             (
