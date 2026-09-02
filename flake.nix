@@ -270,6 +270,7 @@
         noctalia = inputs.noctalia;
         noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
+        lanzaboote = inputs.lanzaboote;
       }
     );
 }
