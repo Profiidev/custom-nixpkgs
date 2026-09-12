@@ -33,4 +33,5 @@
   "lzbt"
   "dbx-desktop"
   "openlogi"
+  "blender"
 ]
