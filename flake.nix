@@ -240,6 +240,7 @@
             config = {
               allowUnfree = true;
               allowUnfreePredicate = _: true;
+              allowInsecurePredicate = p: builtins.elem (nixpkgs.lib.getName p) [ "nwjs" ];
               cudaSupport = true;
             };
             overlays = [
