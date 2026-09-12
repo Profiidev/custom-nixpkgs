@@ -31,4 +31,6 @@
   "onnxruntime"
   "basalt-launcher"
   "lzbt"
+  "dbx-desktop"
+  "openlogi"
 ]

@@ -142,6 +142,19 @@
         pre-commit.follows = "git-hooks";
       };
     };
+
+    openlogi = {
+      url = "github:AprilNEA/OpenLogi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dbx = {
+      url = "github:t8y2/dbx";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs =
@@ -184,6 +197,8 @@
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
             basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
+            dbx-desktop = inputs.dbx.packages.${system}.dbx-desktop;
+            openlogi = inputs.openlogi.packages.${system}.openlogi;
           }
           // (prev.lib.foldl
             (
@@ -272,6 +287,7 @@
         noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
         lanzaboote = inputs.lanzaboote;
+        openlogi = inputs.openlogi;
       }
     );
 }
