@@ -77,7 +77,6 @@ jobs:
       - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
       - name: Install Hibernation CLI
         uses: profiidev/hibernation@d1d0857b79670ea9edb16431850bff98f93cdcbe # v0
-        if: github.event_name != 'pull_request'
         with:
           url: ${{ secrets.HIBERNATION_URL }}
           token: ${{ secrets.HIBERNATION_TOKEN }}
@@ -87,7 +86,6 @@ jobs:
         run: nix build .#\"${{ matrix.package }}\" -Lv --print-out-paths --accept-flake-config
 
       - name: Push to Cache
-        if: github.event_name != 'pull_request'
         run: |
           DIRS="result result-bin result-man result-dev result-lib result-doc result-include result-info result-static"
           for dir in $DIRS; do

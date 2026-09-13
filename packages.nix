@@ -28,7 +28,8 @@
   "vicinae-npm"
   "vicinae-with-soulver"
   "python3Packages.opencv4"
-  "onnxruntime"
   "basalt-launcher"
   "lzbt"
+  "openlogi"
+  "blender"
 ]

@@ -142,6 +142,11 @@
         pre-commit.follows = "git-hooks";
       };
     };
+
+    openlogi = {
+      url = "github:AprilNEA/OpenLogi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -184,6 +189,7 @@
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
             basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
+            openlogi = inputs.openlogi.packages.${system}.openlogi;
           }
           // (prev.lib.foldl
             (
@@ -240,6 +246,7 @@
             config = {
               allowUnfree = true;
               allowUnfreePredicate = _: true;
+              allowInsecurePredicate = p: builtins.elem (nixpkgs.lib.getName p) [ "nwjs" ];
               cudaSupport = true;
             };
             overlays = [
@@ -271,6 +278,7 @@
         noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
         lanzaboote = inputs.lanzaboote;
+        openlogi = inputs.openlogi;
       }
     );
 }
