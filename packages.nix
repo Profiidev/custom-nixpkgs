@@ -30,7 +30,6 @@
   "python3Packages.opencv4"
   "basalt-launcher"
   "lzbt"
-  "dbx-desktop"
   "openlogi"
   "blender"
 ]

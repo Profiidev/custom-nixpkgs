@@ -149,21 +149,6 @@
     },
     "crane_2": {
       "locked": {
-        "lastModified": 1785284101,
-        "narHash": "sha256-ghcXEpYEM4a7pbEkoqbn8c0ptJJqgGzuFiG3T6W5g4I=",
-        "owner": "ipetkov",
-        "repo": "crane",
-        "rev": "756d6d07c3818ea95d1e2cdac63fa7d02fe3e61b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ipetkov",
-        "repo": "crane",
-        "type": "github"
-      }
-    },
-    "crane_3": {
-      "locked": {
         "lastModified": 1781825982,
         "narHash": "sha256-SlXKwIRIhrOSAcTjCB3ftPLzJWZStQIPS7J1FlZPnKk=",
         "owner": "ipetkov",
@@ -174,31 +159,6 @@
       "original": {
         "owner": "ipetkov",
         "repo": "crane",
-        "type": "github"
-      }
-    },
-    "dbx": {
-      "inputs": {
-        "crane": "crane_2",
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay"
-      },
-      "locked": {
-        "lastModified": 1789221569,
-        "narHash": "sha256-mNFrNYxPverMQgm6Du0yIiPEyAaicWfgBfelYlDCgXM=",
-        "owner": "t8y2",
-        "repo": "dbx",
-        "rev": "8ff56b48372a013d5cbadc86e47d91cfbce800f2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "t8y2",
-        "repo": "dbx",
         "type": "github"
       }
     },
@@ -627,14 +587,14 @@
     },
     "lanzaboote": {
       "inputs": {
-        "crane": "crane_3",
+        "crane": "crane_2",
         "nixpkgs": [
           "nixpkgs"
         ],
         "pre-commit": [
           "git-hooks"
         ],
-        "rust-overlay": "rust-overlay_2"
+        "rust-overlay": "rust-overlay"
       },
       "locked": {
         "lastModified": 1782141370,
@@ -831,7 +791,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "rust-overlay": "rust-overlay_3"
+        "rust-overlay": "rust-overlay_2"
       },
       "locked": {
         "lastModified": 1789017850,
@@ -869,7 +829,6 @@
         "affinity-nix": "affinity-nix",
         "basalt-launcher": "basalt-launcher",
         "bun2nix": "bun2nix",
-        "dbx": "dbx",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "git-hooks": "git-hooks",
@@ -892,27 +851,6 @@
     "rust-overlay": {
       "inputs": {
         "nixpkgs": [
-          "dbx",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1784611586,
-        "narHash": "sha256-OfqgY+0hp/zseZB7uyH0U8kIDPS4scZZCyAurEplvG0=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "14f58845249f3552a89b07772626b8d3c632fa86",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "rust-overlay_2": {
-      "inputs": {
-        "nixpkgs": [
           "lanzaboote",
           "nixpkgs"
         ]
@@ -931,7 +869,7 @@
         "type": "github"
       }
     },
-    "rust-overlay_3": {
+    "rust-overlay_2": {
       "inputs": {
         "nixpkgs": [
           "openlogi",
@@ -952,7 +890,7 @@
         "type": "github"
       }
     },
-    "rust-overlay_4": {
+    "rust-overlay_3": {
       "inputs": {
         "nixpkgs": [
           "wayscriber",
@@ -1093,7 +1031,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "rust-overlay": "rust-overlay_4"
+        "rust-overlay": "rust-overlay_3"
       },
       "locked": {
         "lastModified": 1789059106,
