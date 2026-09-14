@@ -95,23 +95,6 @@
       };
     };
 
-    noctalia-qs = {
-      url = "github:noctalia-dev/noctalia-qs";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        treefmt-nix.follows = "treefmt-nix";
-      };
-    };
-
-    noctalia-legacy = {
-      url = "github:noctalia-dev/noctalia/legacy-v4";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        noctalia-qs.follows = "noctalia-qs";
-      };
-    };
-
     noctalia = {
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -173,7 +156,6 @@
 
           externalOverlays = [
             inputs.vicinae.overlays.default
-            inputs.noctalia-legacy.overlays.default
             inputs.noctalia.overlays.default
             inputs.noctalia-greeter.overlays.default
             inputs.affinity-nix.overlays.default
@@ -273,7 +255,6 @@
 
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
-        noctalia-legacy = inputs.noctalia-legacy;
         noctalia = inputs.noctalia;
         noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
