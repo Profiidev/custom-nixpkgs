@@ -1,7 +1,6 @@
 [
   "bun2nix"
   "noctalia-qs"
-  "quickshell"
   "wayscriber-configurator"
   "affinity-v3"
   "hyprland"
