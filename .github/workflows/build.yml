@@ -83,12 +83,11 @@ jobs:
           signing-key: ${{ secrets.HIBERNATION_SIGNING_KEY }}
 
       - name: Build package
-        run: nix build .#\"${{ matrix.package }}\" -Lv --print-out-paths --accept-flake-config
+        run: nix build .#\"${{ matrix.package }}\"^* -Lv --print-out-paths --accept-flake-config
 
       - name: Push to Cache
         run: |
-          DIRS="result result-bin result-man result-dev result-lib result-doc result-include result-info result-static"
-          for dir in $DIRS; do
+          for dir in result result-*; do
             if [ -e $dir ]; then
               hibernation push projects $(readlink $dir)
             fi
