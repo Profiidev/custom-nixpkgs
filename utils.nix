@@ -34,6 +34,7 @@ let
     "kdePackages.kdenlive"
     "strix"
     "claude-desktop"
+    "comfy-desktop"
   ];
   filterDarwinUnsupported =
     pkg: !(pkgs.stdenv.hostPlatform.isDarwin && builtins.elem pkg darwinUnsupported);
@@ -46,6 +47,7 @@ let
     "linuxPackages_latest.virtualbox"
     "gpu-screen-recorder-notification"
     "gpu-screen-recorder-ui"
+    "comfy-desktop"
   ];
   filterArmUnsupported =
     pkg: !(pkgs.stdenv.hostPlatform.isAarch64 && builtins.elem pkg armUnsupported);

@@ -82,10 +82,31 @@ jobs:
           token: ${{ secrets.HIBERNATION_TOKEN }}
           signing-key: ${{ secrets.HIBERNATION_SIGNING_KEY }}
 
+      - name: Check cache
+        id: check
+        run: |
+          OUTS=$(nix eval --json .#\"${{ matrix.package }}\" --accept-flake-config \
+            --apply 'p: map (o: p.${o}.outPath) (p.outputs or ["out"])' | jq -r '.[]') || exit 0
+          [ -n "$OUTS" ] || exit 0
+          CACHES=$(nix eval --json --file flake.nix nixConfig.extra-substituters | jq -r '.[]')
+          for cache in https://cache.nixos.org $CACHES; do  # word-split on newlines (bash)
+            missing=0
+            for out in $OUTS; do
+              nix path-info --store "$cache" "$out" >/dev/null 2>&1 || { echo "$out missing in $cache"; missing=1; break; }
+            done
+            if [ "$missing" = 0 ]; then
+              echo "all outputs already in $cache, skipping build"
+              echo "cached=true" >> $GITHUB_OUTPUT
+              break
+            fi
+          done
+
       - name: Build package
+        if: steps.check.outputs.cached != 'true'
         run: nix build .#\"${{ matrix.package }}\"^* -Lv --print-out-paths --accept-flake-config
 
       - name: Push to Cache
+        if: steps.check.outputs.cached != 'true'
         run: |
           for dir in result result-*; do
             if [ -e $dir ]; then
