@@ -5,6 +5,8 @@
   cargo-tauri,
   nodejs,
   pnpm_10,
+  pnpmConfigHook,
+  fetchPnpmDeps,
   pkg-config,
   perl,
   python3,
@@ -33,8 +35,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-QsamesZVtdWLOs2RAPgHtNrhCVrScI6OpZqK8+K+Mzw=";
 
-  pnpmDeps = pnpm_10.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
+    pnpm = pnpm_10;
     fetcherVersion = 4;
     hash = "sha256-gJnHsb1JdbNU1O95O8jdt6JjITB+q1K/WlT+eZ5noRI=";
   };
@@ -51,7 +54,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   nativeBuildInputs = [
     nodejs
     pnpm_10
-    pnpm_10.configHook
+    pnpmConfigHook
     pkg-config
     perl
     cargo-tauri.hook
