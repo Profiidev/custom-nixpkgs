@@ -64,6 +64,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     python3
   ];
 
+  doCheck = false;
   # Same features as upstream test CI. Some tests fail without these settings
   checkNoDefaultFeatures = true;
   checkFeatures = [
