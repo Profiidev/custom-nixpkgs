@@ -4,9 +4,7 @@
   rustPlatform,
   cargo-tauri,
   nodejs,
-  pnpm,
-  pnpmConfigHook,
-  fetchPnpmDeps,
+  pnpm_10,
   pkg-config,
   perl,
   python3,
@@ -35,10 +33,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-QsamesZVtdWLOs2RAPgHtNrhCVrScI6OpZqK8+K+Mzw=";
 
-  pnpmDeps = fetchPnpmDeps {
+  pnpmDeps = pnpm_10.fetchDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-8hA97KK+5J9w1YZpMEQuzFZnsXMuIQ0oSYySc3AVGcg=";
+    hash = "sha256-gJnHsb1JdbNU1O95O8jdt6JjITB+q1K/WlT+eZ5noRI=";
   };
 
   # updater artifacts need TAURI_SIGNING_PRIVATE_KEY
@@ -52,8 +50,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [
     nodejs
-    pnpm
-    pnpmConfigHook
+    pnpm_10
+    pnpm_10.configHook
     pkg-config
     perl
     cargo-tauri.hook
