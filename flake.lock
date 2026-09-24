@@ -1,41 +1,5 @@
 {
   "nodes": {
-    "affinity-nix": {
-      "inputs": {
-        "corefonts": "corefonts",
-        "crane": "crane",
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-parts": "flake-parts",
-        "git-hooks": [
-          "git-hooks"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "on-linux": "on-linux",
-        "plugin-loader-src": "plugin-loader-src",
-        "treefmt-nix": [
-          "treefmt-nix"
-        ],
-        "windows-rs": "windows-rs",
-        "wintypes_shim": "wintypes_shim"
-      },
-      "locked": {
-        "lastModified": 1789167246,
-        "narHash": "sha256-vGs9R6cUsR+cCewGxWq3FTK5pcB7QAaMHKhrEb/4Z9Y=",
-        "owner": "mrshmllow",
-        "repo": "affinity-nix",
-        "rev": "9d2534bb14eb13f583011ae9415fc1871d39dc4e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mrshmllow",
-        "repo": "affinity-nix",
-        "type": "github"
-      }
-    },
     "aquamarine": {
       "inputs": {
         "hyprutils": [
@@ -89,65 +53,7 @@
         "type": "github"
       }
     },
-    "bun2nix": {
-      "inputs": {
-        "flake-parts": "flake-parts_2",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": [
-          "systems"
-        ],
-        "treefmt-nix": [
-          "treefmt-nix"
-        ]
-      },
-      "locked": {
-        "lastModified": 1784665499,
-        "narHash": "sha256-9BMxlTxCCDAeoNLtb1a/st7udtTIJep+wpUzquA29VU=",
-        "owner": "nix-community",
-        "repo": "bun2nix",
-        "rev": "0f2a1f0b6f42cebe3b149bf62d38754c5e0e9729",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "bun2nix",
-        "type": "github"
-      }
-    },
-    "corefonts": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1431183738,
-        "narHash": "sha256-610Km9GCtYWxi2SH5jH/XYPXc5f58q5lB05/5XxO/qM=",
-        "owner": "pushcx",
-        "repo": "corefonts",
-        "rev": "8f8627b0004b5f1b952c09cf6390e4ae46475e59",
-        "type": "github"
-      },
-      "original": {
-        "owner": "pushcx",
-        "repo": "corefonts",
-        "type": "github"
-      }
-    },
     "crane": {
-      "locked": {
-        "lastModified": 1788465171,
-        "narHash": "sha256-Y1/TTVXjYXGF068IThQH9fPSZ0SIE74PABlUxnWTUH0=",
-        "owner": "ipetkov",
-        "repo": "crane",
-        "rev": "eb35abda9f232cc6610b1d1e3200d15c49b7ac54",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ipetkov",
-        "repo": "crane",
-        "type": "github"
-      }
-    },
-    "crane_2": {
       "locked": {
         "lastModified": 1781825982,
         "narHash": "sha256-SlXKwIRIhrOSAcTjCB3ftPLzJWZStQIPS7J1FlZPnKk=",
@@ -175,45 +81,6 @@
       "original": {
         "owner": "NixOS",
         "repo": "flake-compat",
-        "type": "github"
-      }
-    },
-    "flake-parts": {
-      "inputs": {
-        "nixpkgs-lib": "nixpkgs-lib"
-      },
-      "locked": {
-        "lastModified": 1788450739,
-        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "flake-parts_2": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "bun2nix",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1782949081,
-        "narHash": "sha256-vp6Y/Grm98ESt6ceOkWiHWyZRDV3J1RID4w+6NWK9yA=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "17c9d6cdfc60c64f4ee8d306f9bc0b4ccb51481e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
         "type": "github"
       }
     },
@@ -587,7 +454,7 @@
     },
     "lanzaboote": {
       "inputs": {
-        "crane": "crane_2",
+        "crane": "crane",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -624,21 +491,6 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-lib": {
-      "locked": {
-        "lastModified": 1788057806,
-        "narHash": "sha256-DTQSMxzDWmT0zhguthvegnVkn7CFqGCv4IHCzk5ZUpM=",
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "rev": "596e2e3940e09b2abbeb03f75fa1828c57fcd72c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
         "type": "github"
       }
     },
@@ -720,22 +572,6 @@
         "type": "github"
       }
     },
-    "on-linux": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1787435510,
-        "narHash": "sha256-ENn1Xh+JR+6ITt3oe4DC0EiTT2b6PErPQTFPkYQRJBA=",
-        "owner": "seapear",
-        "repo": "AffinityOnLinux",
-        "rev": "4dd5635eab8502bd4653e2e478478af04ff84449",
-        "type": "github"
-      },
-      "original": {
-        "owner": "seapear",
-        "repo": "AffinityOnLinux",
-        "type": "github"
-      }
-    },
     "openlogi": {
       "inputs": {
         "nixpkgs": [
@@ -757,28 +593,9 @@
         "type": "github"
       }
     },
-    "plugin-loader-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1776972538,
-        "narHash": "sha256-2EvrOYQCB2Z2YXhcPnjR67KoOCvwTVW3TfLcmU3//ak=",
-        "owner": "noahc3",
-        "repo": "AffinityPluginLoader",
-        "rev": "1d7956d5b791bd6a213e8b28c1e25e1f4bcc6166",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noahc3",
-        "repo": "AffinityPluginLoader",
-        "rev": "1d7956d5b791bd6a213e8b28c1e25e1f4bcc6166",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
-        "affinity-nix": "affinity-nix",
         "basalt-launcher": "basalt-launcher",
-        "bun2nix": "bun2nix",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "git-hooks": "git-hooks",
@@ -790,7 +607,6 @@
         "openlogi": "openlogi",
         "soulver-cpp": "soulver-cpp",
         "systems": "systems",
-        "treefmt-nix": "treefmt-nix",
         "vicinae": "vicinae",
         "vicinae-extensions": "vicinae-extensions",
         "wayscriber": "wayscriber"
@@ -895,26 +711,6 @@
         "type": "github"
       }
     },
-    "treefmt-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786901030,
-        "narHash": "sha256-WSFCsDSE5ffgD2MqzkM2CYjeFiKhRF/dJUN8uedb6YE=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "27b3b12a8e6375f28ebe122f07d230ca5459bbfa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
     "vicinae": {
       "inputs": {
         "nixpkgs": [
@@ -992,39 +788,6 @@
       "original": {
         "owner": "devmobasa",
         "repo": "wayscriber",
-        "type": "github"
-      }
-    },
-    "windows-rs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1771531570,
-        "narHash": "sha256-UmhpbCd3+0We7JiXFXgcS8jWMnZI2NRqPOs+UOsjrUc=",
-        "owner": "microsoft",
-        "repo": "windows-rs",
-        "rev": "628f84c51645217c7a06a20774ea1275dc7270ca",
-        "type": "github"
-      },
-      "original": {
-        "owner": "microsoft",
-        "repo": "windows-rs",
-        "rev": "628f84c51645217c7a06a20774ea1275dc7270ca",
-        "type": "github"
-      }
-    },
-    "wintypes_shim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1750396180,
-        "narHash": "sha256-E3go8SmUkAWrxQnr852WQB0huzdkO7CWiuB8Q2QyMZ4=",
-        "owner": "ElementalWarrior",
-        "repo": "wine-wintypes.dll-for-affinity",
-        "rev": "f8a2d42ba3abc5dcdc584daa6728a2fa019be72e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ElementalWarrior",
-        "repo": "wine-wintypes.dll-for-affinity",
         "type": "github"
       }
     },

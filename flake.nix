@@ -36,27 +36,12 @@
       inputs.systems.follows = "systems";
     };
 
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
         pre-commit-hooks.follows = "git-hooks";
-      };
-    };
-
-    affinity-nix = {
-      url = "github:mrshmllow/affinity-nix";
-      inputs = {
-        flake-compat.follows = "flake-compat";
-        treefmt-nix.follows = "treefmt-nix";
-        nixpkgs.follows = "nixpkgs";
-        git-hooks.follows = "git-hooks";
       };
     };
 
@@ -82,15 +67,6 @@
         nixpkgs.follows = "nixpkgs";
         vicinae.follows = "vicinae";
         flake-compat.follows = "flake-compat";
-        systems.follows = "systems";
-      };
-    };
-
-    bun2nix = {
-      url = "github:nix-community/bun2nix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        treefmt-nix.follows = "treefmt-nix";
         systems.follows = "systems";
       };
     };
@@ -144,7 +120,6 @@
         let
           system = prev.stdenv.hostPlatform.system;
 
-          mkBunDerivation = inputs.bun2nix.lib.${system}.mkBunDerivation;
           mkVicinaeExtension = inputs.vicinae.lib.${system}.mkVicinaeExtension;
           # Raycast extensions build with `ray build`; the default buildPhase's
           # --out flag doesn't reach ray, so pin the -o output flag here once.
@@ -158,13 +133,10 @@
             inputs.vicinae.overlays.default
             inputs.noctalia.overlays.default
             inputs.noctalia-greeter.overlays.default
-            inputs.affinity-nix.overlays.default
-            inputs.bun2nix.overlays.default
           ];
 
           localPkgs = {
             vicinae-with-soulver = inputs.vicinae.packages.${system}.with-soulver;
-            bun2nix = inputs.bun2nix.packages.${system}.default;
             wayscriber = inputs.wayscriber.packages.${system}.default;
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
@@ -205,7 +177,6 @@
         // localPkgs
         // (import ./overlay.nix {
           inherit
-            mkBunDerivation
             mkVicinaeExtension
             mkRayCastExtension
             final

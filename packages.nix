@@ -1,8 +1,6 @@
 [
-  "bun2nix"
   "noctalia-qs"
   "wayscriber-configurator"
-  "affinity-v3"
   "hyprland"
   "xdg-desktop-portal-hyprland"
   "noctalia"
