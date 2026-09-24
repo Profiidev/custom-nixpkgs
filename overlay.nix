@@ -1,7 +1,6 @@
 {
   final,
   prev,
-  mkBunDerivation,
   mkVicinaeExtension,
   mkRayCastExtension,
   ...
@@ -21,7 +20,6 @@ in
       final
       // {
         inherit
-          mkBunDerivation
           mkVicinaeExtension
           mkRayCastExtension
           sources

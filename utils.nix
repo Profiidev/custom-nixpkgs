@@ -16,7 +16,6 @@ let
     "noctalia-qs"
     "wayscriber"
     "wayscriber-configurator"
-    "affinity-v3"
     "hyprland"
     "xdg-desktop-portal-hyprland"
     "noctalia"
@@ -40,7 +39,6 @@ let
   armUnsupported = [
     "nwjs"
     "moondeck-buddy"
-    "affinity-v3"
     "virtualbox"
     "linuxPackages_latest.virtualbox"
     "gpu-screen-recorder-notification"
