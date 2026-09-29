@@ -32,6 +32,7 @@ let
     "strix"
     "claude-desktop"
     "comfy-desktop"
+    "webots"
   ];
   filterDarwinUnsupported =
     pkg: !(pkgs.stdenv.hostPlatform.isDarwin && builtins.elem pkg darwinUnsupported);
@@ -44,6 +45,7 @@ let
     "gpu-screen-recorder-notification"
     "gpu-screen-recorder-ui"
     "comfy-desktop"
+    "webots"
   ];
   filterArmUnsupported =
     pkg: !(pkgs.stdenv.hostPlatform.isAarch64 && builtins.elem pkg armUnsupported);
