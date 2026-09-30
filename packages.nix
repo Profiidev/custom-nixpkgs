@@ -30,6 +30,6 @@
   "openlogi"
   "blender"
   "positron"
-  "proton"
+  "proton-launcher"
   "hibernation"
 ]
