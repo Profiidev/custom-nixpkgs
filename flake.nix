@@ -106,6 +106,30 @@
       url = "github:AprilNEA/OpenLogi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    positron = {
+      url = "github:profiidev/positron/latest";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
+
+    proton = {
+      url = "github:profiidev/proton/latest";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
+
+    hibernation = {
+      url = "github:profiidev/hibernation/latest";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs =
@@ -144,6 +168,9 @@
             basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
             openlogi = inputs.openlogi.packages.${system}.openlogi;
+            positron = inputs.positron.packages.${system}.default;
+            hibernation = inputs.hibernation.packages.${system}.default;
+            proton-launcher = inputs.proton.packages.${system}.default;
           }
           // (prev.lib.foldl
             (

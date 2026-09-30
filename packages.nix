@@ -29,4 +29,7 @@
   "lzbt"
   "openlogi"
   "blender"
+  "positron"
+  "proton-launcher"
+  "hibernation"
 ]
