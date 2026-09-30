@@ -170,7 +170,7 @@
             openlogi = inputs.openlogi.packages.${system}.openlogi;
             positron = inputs.positron.packages.${system}.default;
             hibernation = inputs.hibernation.packages.${system}.default;
-            proton = inputs.proton.packages.${system}.default;
+            proton-launcher = inputs.proton.packages.${system}.default;
           }
           // (prev.lib.foldl
             (
