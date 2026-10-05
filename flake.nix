@@ -145,6 +145,10 @@
           system = prev.stdenv.hostPlatform.system;
 
           mkVicinaeExtension = inputs.vicinae.lib.${system}.mkVicinaeExtension;
+          vicinaeGcc16 = inputs.vicinae.packages.${system}.default.override {
+            gcc15Stdenv = final.stdenv;
+          };
+          soulver = inputs.soulver-cpp.packages.${system}.default;
           # Raycast extensions build with `ray build`; the default buildPhase's
           # --out flag doesn't reach ray, so pin the -o output flag here once.
           mkRayCastExtension =
@@ -160,7 +164,21 @@
           ];
 
           localPkgs = {
-            vicinae-with-soulver = inputs.vicinae.packages.${system}.with-soulver;
+            # upstream pins gcc15Stdenv, but numen builds with default stdenv (gcc 16) and
+            # needs its newer libstdc++ (GLIBCXX_3.4.36); build vicinae with matching stdenv
+            vicinae-with-soulver = final.symlinkJoin {
+              name = "${vicinaeGcc16.name}-with-soulver";
+              paths = [ vicinaeGcc16 ];
+              nativeBuildInputs = [ final.makeWrapper ];
+              postBuild = ''
+                for bin in $out/bin/*; do
+                  wrapProgram "$bin" \
+                    --prefix LD_LIBRARY_PATH : ${soulver}/lib \
+                    --prefix XDG_DATA_DIRS : ${soulver}/share
+                done
+              '';
+              inherit (vicinaeGcc16) meta;
+            };
             wayscriber = inputs.wayscriber.packages.${system}.default;
             wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
