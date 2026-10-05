@@ -1,5 +1,4 @@
 [
-  "noctalia-qs"
   "wayscriber-configurator"
   "hyprland"
   "xdg-desktop-portal-hyprland"
