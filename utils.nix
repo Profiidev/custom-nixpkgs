@@ -13,7 +13,6 @@ let
     "sddm-theme"
     "nwjs"
     "vicinae"
-    "noctalia-qs"
     "wayscriber"
     "wayscriber-configurator"
     "hyprland"
