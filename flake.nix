@@ -130,6 +130,14 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
+    corona = {
+      url = "github:profiidev/corona";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs =
@@ -189,6 +197,7 @@
             positron = inputs.positron.packages.${system}.default;
             hibernation = inputs.hibernation.packages.${system}.default;
             proton-launcher = inputs.proton.packages.${system}.default;
+            corona = inputs.corona.packages.${system}.default;
           }
           // (prev.lib.foldl
             (
@@ -276,6 +285,7 @@
         hyprland = inputs.hyprland;
         lanzaboote = inputs.lanzaboote;
         openlogi = inputs.openlogi;
+        corona = inputs.corona;
       }
     );
 }
