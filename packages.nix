@@ -31,4 +31,5 @@
   "positron"
   "proton-launcher"
   "hibernation"
+  "corona"
 ]

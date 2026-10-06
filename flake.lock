@@ -53,6 +53,29 @@
         "type": "github"
       }
     },
+    "corona": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791274914,
+        "narHash": "sha256-Au+nOEUFxjPsky9IOxMeI/Bx8+dtUBhLjoGnXn5O8/s=",
+        "owner": "profiidev",
+        "repo": "corona",
+        "rev": "8ac7e68edcbbbafba1e2904af57dfe2ac0c1a34e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "profiidev",
+        "repo": "corona",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1781825982,
@@ -714,6 +737,7 @@
     "root": {
       "inputs": {
         "basalt-launcher": "basalt-launcher",
+        "corona": "corona",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "git-hooks": "git-hooks",
