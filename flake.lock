@@ -623,26 +623,6 @@
         "type": "github"
       }
     },
-    "noctalia-greeter": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791192412,
-        "narHash": "sha256-BEN4jS8gSBqAgVrx8qh5ezgHVPo80Q4sEMc6hG0nqM0=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia-greeter",
-        "rev": "08c045a684739ba1a52ade040c6a5f08e25f5d27",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "noctalia-greeter",
-        "type": "github"
-      }
-    },
     "numen": {
       "inputs": {
         "nixpkgs": [
@@ -746,15 +726,13 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
-        "noctalia-greeter": "noctalia-greeter",
         "openlogi": "openlogi",
         "positron": "positron",
         "proton": "proton",
         "soulver-cpp": "soulver-cpp",
         "systems": "systems",
         "vicinae": "vicinae",
-        "vicinae-extensions": "vicinae-extensions",
-        "wayscriber": "wayscriber"
+        "vicinae-extensions": "vicinae-extensions"
       }
     },
     "rust-overlay": {
@@ -812,27 +790,6 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "ed3a19fd0439ed618ec5fe1e12f0ba69a8be38b5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "rust-overlay_4": {
-      "inputs": {
-        "nixpkgs": [
-          "wayscriber",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1788505699,
-        "narHash": "sha256-PSPDCdbEBEbSDCWcqv5GkbyD2ACQ9Diz6vmEbWdy4dM=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "9eccf73c5b810052f08aa77ae0548c383259f17f",
         "type": "github"
       },
       "original": {
@@ -930,30 +887,6 @@
       "original": {
         "owner": "vicinaehq",
         "repo": "extensions",
-        "type": "github"
-      }
-    },
-    "wayscriber": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay_4"
-      },
-      "locked": {
-        "lastModified": 1791159882,
-        "narHash": "sha256-R5jzXMixv/+AAv3OXD1hSmM5/Qm5a20okR2LJes6wQo=",
-        "owner": "devmobasa",
-        "repo": "wayscriber",
-        "rev": "fc4c9c7614cb09320ffd3a2c9bdc448f5daf42ef",
-        "type": "github"
-      },
-      "original": {
-        "owner": "devmobasa",
-        "repo": "wayscriber",
         "type": "github"
       }
     },
