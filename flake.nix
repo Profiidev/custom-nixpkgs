@@ -76,19 +76,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    noctalia-greeter = {
-      url = "github:noctalia-dev/noctalia-greeter";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    wayscriber = {
-      url = "github:devmobasa/wayscriber";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
     basalt-launcher = {
       url = "github:MegalithOfficial/basalt-launcher";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -168,7 +155,6 @@
           externalOverlays = [
             inputs.vicinae.overlays.default
             inputs.noctalia.overlays.default
-            inputs.noctalia-greeter.overlays.default
           ];
 
           localPkgs = {
@@ -187,8 +173,6 @@
               '';
               inherit (vicinaeGcc16) meta;
             };
-            wayscriber = inputs.wayscriber.packages.${system}.default;
-            wayscriber-configurator = inputs.wayscriber.packages.${system}.wayscriber-configurator;
             hyprland = inputs.hyprland.packages.${system}.hyprland;
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
             basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
@@ -281,7 +265,6 @@
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
         noctalia = inputs.noctalia;
-        noctalia-greeter = inputs.noctalia-greeter;
         hyprland = inputs.hyprland;
         lanzaboote = inputs.lanzaboote;
         openlogi = inputs.openlogi;
