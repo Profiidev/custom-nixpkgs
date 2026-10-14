@@ -20,16 +20,17 @@
   libcap_ng,
   lib,
   libGL,
+  pipewire,
 }:
 
 stdenv.mkDerivation rec {
   pname = "claude-desktop";
   # curl -s https://downloads.claude.ai/claude-desktop/apt/stable/dists/stable/main/binary-amd64/Packages | grep Version:
-  version = "1.24012.9";
+  version = "2.37337.1";
 
   src = fetchurl {
     url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
-    sha256 = "sha256-MC5tII3YyOnlIGfaoo7zsRcaFhNYb9DhC+3GQiJbbuE=";
+    sha256 = "sha256-QXRbCRTw/1FjGh/xu0A7g2v1yZWEXMpnQt05vKOi2hQ=";
   };
 
   nativeBuildInputs = [
@@ -53,6 +54,7 @@ stdenv.mkDerivation rec {
     alsa-lib
     libseccomp
     libcap_ng
+    pipewire
   ];
 
   installPhase = ''
