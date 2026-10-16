@@ -700,11 +700,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790790237,
-        "narHash": "sha256-H3bXJn3BmS2ZWwiDRbWt4swGOZtuVHD1lWJD6ncFjdQ=",
+        "lastModified": 1792141454,
+        "narHash": "sha256-xtk+/5tCwUn5JlY76U/tcN2qrvvPm+8VjNdM4qQARu4=",
         "owner": "profiidev",
         "repo": "proton",
-        "rev": "743e7ea2d84169758b555d1c6ebab361ef2cb7c8",
+        "rev": "0f5cb47205ab485fd9ae95120fd91cd1f67621dc",
         "type": "github"
       },
       "original": {
