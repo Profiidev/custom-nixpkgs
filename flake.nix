@@ -239,6 +239,7 @@
               allowUnfreePredicate = _: true;
               allowInsecurePredicate = p: builtins.elem (nixpkgs.lib.getName p) [ "nwjs" ];
               cudaSupport = true;
+              cudaCapabilities = [ "8.9" "8.6" ]; # RTX 40xx + RTX 30xx
             };
             overlays = [
               overlay
