@@ -6,6 +6,7 @@
   "gimp"
   "ffmpeg-full"
   "kdePackages.kdenlive"
+  "kdePackages.mlt"
   "obs-studio"
   "vicinae-nix"
   "vicinae-power-profile"
