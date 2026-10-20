@@ -30,5 +30,7 @@
   "hibernation"
   "corona"
   "xwayland"
-  "nvidia-settings"
+  "linuxPackages_latest.nvidiaPackages.latest"
+  "linuxPackages_latest.nvidiaPackages.latest.settings"
+  "linuxPackages_latest.nvidia_x11"
 ]

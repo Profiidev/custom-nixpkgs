@@ -28,6 +28,9 @@ let
     "claude-desktop"
     "comfy-desktop"
     "webots"
+    "linuxPackages_latest.nvidiaPackages.latest"
+    "linuxPackages_latest.nvidiaPackages.latest.settings"
+    "linuxPackages_latest.nvidia_x11"
   ];
   filterDarwinUnsupported =
     pkg: !(pkgs.stdenv.hostPlatform.isDarwin && builtins.elem pkg darwinUnsupported);
