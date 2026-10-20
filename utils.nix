@@ -26,7 +26,6 @@ let
     "obs-studio"
     "kdePackages.kdenlive"
     "kdePackages.mlt"
-    "strix"
     "claude-desktop"
     "comfy-desktop"
     "webots"
