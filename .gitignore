@@ -1,6 +1,5 @@
 /result
-/result-man
-/result-bin
+/result-*
 /test/
 
 packages/rpcsx.nix

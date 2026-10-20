@@ -71,16 +71,6 @@
       };
     };
 
-    noctalia = {
-      url = "github:noctalia-dev/noctalia";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    basalt-launcher = {
-      url = "github:MegalithOfficial/basalt-launcher";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.1.0";
       inputs = {
@@ -154,7 +144,6 @@
 
           externalOverlays = [
             inputs.vicinae.overlays.default
-            inputs.noctalia.overlays.default
           ];
 
           localPkgs = {
@@ -175,7 +164,6 @@
             };
             hyprland = inputs.hyprland.packages.${system}.hyprland;
             xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
-            basalt-launcher = inputs.basalt-launcher.packages.${system}.default;
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
             openlogi = inputs.openlogi.packages.${system}.openlogi;
             positron = inputs.positron.packages.${system}.default;
@@ -239,7 +227,10 @@
               allowUnfreePredicate = _: true;
               allowInsecurePredicate = p: builtins.elem (nixpkgs.lib.getName p) [ "nwjs" ];
               cudaSupport = true;
-              cudaCapabilities = [ "8.9" "8.6" ]; # RTX 40xx + RTX 30xx
+              cudaCapabilities = [
+                "8.9"
+                "8.6"
+              ]; # RTX 40xx + RTX 30xx
             };
             overlays = [
               overlay
@@ -265,7 +256,6 @@
 
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
-        noctalia = inputs.noctalia;
         hyprland = inputs.hyprland;
         lanzaboote = inputs.lanzaboote;
         openlogi = inputs.openlogi;
