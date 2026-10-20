@@ -15,7 +15,6 @@ let
     "vicinae"
     "hyprland"
     "xdg-desktop-portal-hyprland"
-    "noctalia"
     "virtualbox"
     "linuxPackages_latest.virtualbox"
     "gpu-screen-recorder-notification"

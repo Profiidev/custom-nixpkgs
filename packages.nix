@@ -1,7 +1,6 @@
 [
   "hyprland"
   "xdg-desktop-portal-hyprland"
-  "noctalia"
   "ollama"
   "gimp"
   "ffmpeg-full"
@@ -23,7 +22,6 @@
   "vicinae-npm"
   "vicinae-with-soulver"
   "python3Packages.opencv4"
-  "basalt-launcher"
   "lzbt"
   "openlogi"
   "blender"
@@ -31,4 +29,6 @@
   "proton-launcher"
   "hibernation"
   "corona"
+  "xwayland"
+  "nvidia-settings"
 ]
