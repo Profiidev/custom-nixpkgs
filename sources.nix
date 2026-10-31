@@ -15,16 +15,6 @@ let
         ];
       }
     }/extensions/${name}";
-
-  pythonWheel =
-    pname: version: hash:
-    pkgs.python3Packages.fetchPypi {
-      inherit version hash;
-      pname = builtins.replaceStrings [ "-" ] [ "_" ] pname;
-      format = "wheel";
-      dist = "py3";
-      python = "py3";
-    };
 in
 {
   spotifyPlayerRaycastExtension =
@@ -54,12 +44,6 @@ in
   whoisRaycastExtension =
     raycastExtension "whois" "8a2c73ff4315ff30c2ed1d08384dc8d35df32305"
       "sha256-hbbsado3rTNVR/jjFt5JvCTAaUMY5IlMuYGnv0WZz+M=";
-  caidoServerAuthWheel =
-    pythonWheel "caido-server-auth" "0.1.2"
-      "sha256-QMbNNyjiTN/0AsTvpdj1W/bmzHOsAWm96hrR40+v+P8=";
-  caidoSdkClientWheel =
-    pythonWheel "caido-sdk-client" "0.2.0"
-      "sha256-vFc2UWgcCT7pZjx5JNONUiqJzqYOLOANNLqbApQrHaE=";
 
   searchMdnRaycastExtension = pkgs.applyPatches {
     name = "search-mdn-src";

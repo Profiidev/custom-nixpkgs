@@ -13,8 +13,6 @@ let
     "sddm-theme"
     "nwjs"
     "vicinae"
-    "hyprland"
-    "xdg-desktop-portal-hyprland"
     "virtualbox"
     "linuxPackages_latest.virtualbox"
     "gpu-screen-recorder-notification"
