@@ -36,15 +36,6 @@
       inputs.systems.follows = "systems";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        pre-commit-hooks.follows = "git-hooks";
-      };
-    };
-
     soulver-cpp = {
       url = "github:vicinaehq/soulver-cpp";
       inputs = {
@@ -162,8 +153,6 @@
               '';
               inherit (vicinaeGcc16) meta;
             };
-            hyprland = inputs.hyprland.packages.${system}.hyprland;
-            xdg-desktop-portal-hyprland = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
             openlogi = inputs.openlogi.packages.${system}.openlogi;
             positron = inputs.positron.packages.${system}.default;
@@ -256,7 +245,6 @@
 
         vicinae = inputs.vicinae;
         vicinae-extensions = inputs.vicinae-extensions;
-        hyprland = inputs.hyprland;
         lanzaboote = inputs.lanzaboote;
         openlogi = inputs.openlogi;
         corona = inputs.corona;

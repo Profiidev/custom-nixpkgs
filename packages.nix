@@ -1,6 +1,4 @@
 [
-  "hyprland"
-  "xdg-desktop-portal-hyprland"
   "ollama"
   "gimp"
   "ffmpeg-full"
