@@ -10,11 +10,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793357385,
-        "narHash": "sha256-MoL3OE9c/BzP+2PyxjA+glMPu2Asn7OjDbRpN/fgKf0=",
+        "lastModified": 1793514377,
+        "narHash": "sha256-u6kY7tsHui9rECivmLh7WFdWU0W14zz0ZEt0Onio4xs=",
         "owner": "profiidev",
         "repo": "corona",
-        "rev": "d9d42e223f970fb8d0a58e533efeb7d6a3c1dcd9",
+        "rev": "5cb30bb9ef544e8203b2274706f02ca7b1d77cbd",
         "type": "github"
       },
       "original": {
@@ -227,11 +227,11 @@
       },
       "locked": {
         "dir": "packaging",
-        "lastModified": 1793423373,
-        "narHash": "sha256-DPzrEkRgQwyKkK9Fw5OmYm85P85dx3DlscYMRjmCJMA=",
+        "lastModified": 1793577912,
+        "narHash": "sha256-T44jZPY6ajPg7rJhjeFGU1bCBtbrWKCd4167GrzYRiA=",
         "owner": "AprilNEA",
         "repo": "OpenLogi",
-        "rev": "3eb0a5b1dbbc9bacc79b29d61c410022e3737aa9",
+        "rev": "e581c20570fa5506fade755671e74f94eb5f62f4",
         "type": "github"
       },
       "original": {
