@@ -8,6 +8,7 @@
   pnpmConfigHook,
   fetchPnpmDeps,
   pkg-config,
+  aws-lc,
   perl,
   python3,
   wrapGAppsHook4,
@@ -89,6 +90,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
 
   buildInputs = [
+    aws-lc
     webkitgtk_4_1
     openssl
     glib-networking
