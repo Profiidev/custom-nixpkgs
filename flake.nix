@@ -154,7 +154,9 @@
               inherit (vicinaeGcc16) meta;
             };
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
-            openlogi = inputs.openlogi.packages.${system}.openlogi;
+            openlogi = inputs.openlogi.packages.${system}.openlogi.overrideAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ prev.zstd ];
+            });
             positron = inputs.positron.packages.${system}.default;
             hibernation = inputs.hibernation.packages.${system}.default;
             proton-launcher = inputs.proton.packages.${system}.default;
