@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation {
   pname = "hypr-kdeconnect-fix";
-  version = "0-unstable-2026-11-06";
+  version = "0-unstable-2026-11-11";
 
   src = fetchFromGitHub {
     owner = "gfhdhytghd";
     repo = "hypr-kdeconnect-fix";
-    rev = "d1c1216dd56aefc8fa096abe214e2c68a8e1b3c0";
-    hash = "sha256-7z92WekZYESyo/5keLlT2DmpuE6uNaYShKu0ROn7/3E=";
+    rev = "9aa0b14d042d495bbb43809a860ec667eeb4b6ce";
+    hash = "sha256-ZbXf6j9wzRgaaMHkaCq53DGrDsZsZo6PtIOBL3FIOm8=";
   };
 
   strictDeps = true;
