@@ -21,7 +21,6 @@
   "vicinae-with-soulver"
   "python3Packages.opencv4"
   "lzbt"
-  "openlogi"
   "blender"
   "positron"
   "proton-launcher"

@@ -218,29 +218,6 @@
         "type": "github"
       }
     },
-    "openlogi": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay_3"
-      },
-      "locked": {
-        "dir": "packaging",
-        "lastModified": 1794416648,
-        "narHash": "sha256-LugUpWeKDBWPDpSjcKDO80mFGZCdldLhVVvcecBeea0=",
-        "owner": "AprilNEA",
-        "repo": "OpenLogi",
-        "rev": "f3b5797473c936c3be6aa9431e9e1238ceec46c4",
-        "type": "github"
-      },
-      "original": {
-        "dir": "packaging",
-        "owner": "AprilNEA",
-        "repo": "OpenLogi",
-        "type": "github"
-      }
-    },
     "positron": {
       "inputs": {
         "flake-utils": [
@@ -298,7 +275,6 @@
         "hibernation": "hibernation",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
-        "openlogi": "openlogi",
         "positron": "positron",
         "proton": "proton",
         "soulver-cpp": "soulver-cpp",
@@ -341,27 +317,6 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "8534567325bd8a8d2928e6afd81e0a87d19efd3c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "rust-overlay_3": {
-      "inputs": {
-        "nixpkgs": [
-          "openlogi",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792219666,
-        "narHash": "sha256-RMO08tKD+hFIL5ryWi85VY4aHE5oIpdV1h4kVFctOkw=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "a110337465cfb76e3806b81b9db3094c3e6e770a",
         "type": "github"
       },
       "original": {
