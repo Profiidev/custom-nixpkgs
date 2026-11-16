@@ -26,6 +26,7 @@
   "proton-launcher"
   "hibernation"
   "corona"
+  "aurora"
   "xwayland"
   "linuxPackages_latest.nvidiaPackages.latest"
   "linuxPackages_latest.nvidiaPackages.latest.settings"

@@ -1,5 +1,28 @@
 {
   "nodes": {
+    "aurora": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794810782,
+        "narHash": "sha256-M78TjGsNdSRnHAYo40YZPNK2616wCxiKt4e0iPx2Nm8=",
+        "owner": "profiidev",
+        "repo": "aurora",
+        "rev": "cabb32393448782dc1c4eb9337397fb18dc346b6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "profiidev",
+        "repo": "aurora",
+        "type": "github"
+      }
+    },
     "corona": {
       "inputs": {
         "flake-utils": [
@@ -268,6 +291,7 @@
     },
     "root": {
       "inputs": {
+        "aurora": "aurora",
         "corona": "corona",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",

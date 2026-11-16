@@ -101,6 +101,14 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
+    aurora = {
+      url = "github:profiidev/aurora";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs =
@@ -153,6 +161,7 @@
             hibernation = inputs.hibernation.packages.${system}.default;
             proton-launcher = inputs.proton.packages.${system}.default;
             corona = inputs.corona.packages.${system}.default;
+            aurora = inputs.aurora.packages.${system}.default;
           }
           // (prev.lib.foldl
             (
@@ -241,6 +250,7 @@
         vicinae-extensions = inputs.vicinae-extensions;
         lanzaboote = inputs.lanzaboote;
         corona = inputs.corona;
+        aurora = inputs.aurora;
       }
     );
 }
