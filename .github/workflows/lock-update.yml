@@ -20,6 +20,11 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
+      - name: Bump lanzaboote tag
+        run: |
+          tag=$(curl -sf https://api.github.com/repos/nix-community/lanzaboote/releases/latest | jq -er .tag_name)
+          sed -i "s|github:nix-community/lanzaboote/v[^\"]*|github:nix-community/lanzaboote/$tag|" flake.nix
+
       - name: Update components
         run: |
           nix flake update
