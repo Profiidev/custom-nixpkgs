@@ -1,8 +1,6 @@
 {
   final,
   prev,
-  mkVicinaeExtension,
-  mkRayCastExtension,
   ...
 }:
 
@@ -20,8 +18,6 @@ in
       final
       // {
         inherit
-          mkVicinaeExtension
-          mkRayCastExtension
           sources
           ;
       }

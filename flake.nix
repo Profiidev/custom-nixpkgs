@@ -36,32 +36,6 @@
       inputs.systems.follows = "systems";
     };
 
-    soulver-cpp = {
-      url = "github:vicinaehq/soulver-cpp";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-
-    vicinae = {
-      url = "github:vicinaehq/vicinae";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        soulver-cpp.follows = "soulver-cpp";
-      };
-    };
-
-    vicinae-extensions = {
-      url = "github:vicinaehq/extensions";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        vicinae.follows = "vicinae";
-        flake-compat.follows = "flake-compat";
-        systems.follows = "systems";
-      };
-    };
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.1.0";
       inputs = {
@@ -123,71 +97,17 @@
         let
           system = prev.stdenv.hostPlatform.system;
 
-          mkVicinaeExtension = inputs.vicinae.lib.${system}.mkVicinaeExtension;
-          vicinaeGcc16 = inputs.vicinae.packages.${system}.default.override {
-            gcc15Stdenv = final.stdenv;
-          };
-          soulver = inputs.soulver-cpp.packages.${system}.default;
-          # Raycast extensions build with `ray build`; the default buildPhase's
-          # --out flag doesn't reach ray, so pin the -o output flag here once.
-          mkRayCastExtension =
-            args:
-            (mkVicinaeExtension args).overrideAttrs (_: {
-              buildPhase = "npm run build -- -o=$out";
-            });
-
           externalOverlays = [
-            inputs.vicinae.overlays.default
           ];
 
           localPkgs = {
-            # upstream pins gcc15Stdenv, but numen builds with default stdenv (gcc 16) and
-            # needs its newer libstdc++ (GLIBCXX_3.4.36); build vicinae with matching stdenv
-            vicinae-with-soulver = final.symlinkJoin {
-              name = "${vicinaeGcc16.name}-with-soulver";
-              paths = [ vicinaeGcc16 ];
-              nativeBuildInputs = [ final.makeWrapper ];
-              postBuild = ''
-                for bin in $out/bin/*; do
-                  wrapProgram "$bin" \
-                    --prefix LD_LIBRARY_PATH : ${soulver}/lib \
-                    --prefix XDG_DATA_DIRS : ${soulver}/share
-                done
-              '';
-              inherit (vicinaeGcc16) meta;
-            };
             lzbt = inputs.lanzaboote.packages.${system}.lzbt;
             positron = inputs.positron.packages.${system}.default;
             hibernation = inputs.hibernation.packages.${system}.default;
             proton-launcher = inputs.proton.packages.${system}.default;
             corona = inputs.corona.packages.${system}.default;
             aurora = inputs.aurora.packages.${system}.default;
-          }
-          // (prev.lib.foldl
-            (
-              acc: pkg:
-              acc
-              // {
-                "vicinae-${pkg}" = inputs.vicinae-extensions.packages.${system}.${pkg};
-              }
-            )
-            { }
-            [
-              "nix"
-              "power-profile"
-              "it-tools"
-              "port-killer"
-              "hypr-keybinds"
-              "vscode-recents"
-              "zed-recents"
-              "protondb-search"
-              "jetbrains-recent-projects"
-              "hyprland-monitors"
-              "hypr"
-              "timer"
-              "npm"
-            ]
-          );
+          };
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;
         in
@@ -195,8 +115,6 @@
         // localPkgs
         // (import ./overlay.nix {
           inherit
-            mkVicinaeExtension
-            mkRayCastExtension
             final
             ;
           prev = (prev // externalPkgs // localPkgs);
@@ -246,8 +164,6 @@
       // {
         overlays.default = overlay;
 
-        vicinae = inputs.vicinae;
-        vicinae-extensions = inputs.vicinae-extensions;
         lanzaboote = inputs.lanzaboote;
         corona = inputs.corona;
         aurora = inputs.aurora;

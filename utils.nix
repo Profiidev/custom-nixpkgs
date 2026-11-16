@@ -12,7 +12,6 @@ let
     "moondeck-buddy"
     "sddm-theme"
     "nwjs"
-    "vicinae"
     "virtualbox"
     "linuxPackages_latest.virtualbox"
     "gpu-screen-recorder-notification"
