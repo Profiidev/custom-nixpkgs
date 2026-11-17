@@ -10,7 +10,6 @@
   iproute2,
   networkmanager,
   openssl,
-  nix-update-script,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -80,10 +79,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     install -Dm644 -t $out/share/dbus-1/system.d networkmanager/data/nm-draytek-service.conf
   '';
 
-  passthru = {
-    networkManagerPlugin = "VPN/nm-draytek-service.name";
-    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
-  };
+  # no updateScript: pinned on purpose, the cert-pin patch must be re-checked on bumps
+  passthru.networkManagerPlugin = "VPN/nm-draytek-service.name";
 
   meta = {
     description = "NetworkManager plugin for DrayTek SSL VPN";
