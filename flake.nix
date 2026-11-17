@@ -83,6 +83,11 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
+    umbriel = {
+      url = "github:noctalia-dev/umbriel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -107,6 +112,7 @@
             proton-launcher = inputs.proton.packages.${system}.default;
             corona = inputs.corona.packages.${system}.default;
             aurora = inputs.aurora.packages.${system}.default;
+            umbriel = inputs.umbriel.packages.${system}.default;
           };
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;
@@ -167,6 +173,7 @@
         lanzaboote = inputs.lanzaboote;
         corona = inputs.corona;
         aurora = inputs.aurora;
+        umbriel = inputs.umbriel;
       }
     );
 }

@@ -13,6 +13,7 @@
   "hibernation"
   "corona"
   "aurora"
+  "umbriel"
   "xwayland"
   "linuxPackages_latest.nvidiaPackages.latest"
   "linuxPackages_latest.nvidiaPackages.latest.settings"
