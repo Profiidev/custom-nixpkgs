@@ -1,0 +1,202 @@
+diff --git a/networkmanager/editor/nm-draytek-editor.c b/networkmanager/editor/nm-draytek-editor.c
+index 41c40cb..22bc4ca 100644
+--- a/networkmanager/editor/nm-draytek-editor.c
++++ b/networkmanager/editor/nm-draytek-editor.c
+@@ -455,12 +455,19 @@ update_connection(NMVpnEditor *editor, NMConnection *connection, GError **error)
+         return FALSE;
+     }
+ 
++    g_autofree char *cert_sha256 = NULL;
++
+     s_vpn = nm_connection_get_setting_vpn(connection);
+-    if (s_vpn)
++    if (s_vpn) {
++        /* No UI field for the pin (set via nmcli); keep it across GUI saves */
++        cert_sha256 = g_strdup(nm_setting_vpn_get_data_item(s_vpn, NM_DRAYTEK_KEY_CERT_SHA256));
+         nm_connection_remove_setting(connection, NM_TYPE_SETTING_VPN);
++    }
+ 
+     s_vpn = (NMSettingVpn *)nm_setting_vpn_new();
+     g_object_set(s_vpn, NM_SETTING_VPN_SERVICE_TYPE, NM_DRAYTEK_VPN_SERVICE, NULL);
++    if (cert_sha256)
++        nm_setting_vpn_add_data_item(s_vpn, NM_DRAYTEK_KEY_CERT_SHA256, cert_sha256);
+ 
+     nm_setting_vpn_add_data_item(s_vpn, NM_DRAYTEK_KEY_GATEWAY, gateway);
+ 
+diff --git a/networkmanager/editor/nm-draytek-editor.h b/networkmanager/editor/nm-draytek-editor.h
+index 92eb83e..ff13139 100644
+--- a/networkmanager/editor/nm-draytek-editor.h
++++ b/networkmanager/editor/nm-draytek-editor.h
+@@ -25,6 +25,7 @@
+ #define NM_DRAYTEK_KEY_NEVER_DEFAULT        "never-default"
+ #define NM_DRAYTEK_KEY_KEEPALIVE            "keepalive"
+ #define NM_DRAYTEK_KEY_ROUTES               "routes"
++#define NM_DRAYTEK_KEY_CERT_SHA256          "cert-sha256"
+ 
+ /* vpn.secrets key names */
+ #define NM_DRAYTEK_KEY_PASSWORD             "password"
+diff --git a/networkmanager/src/tunnel.rs b/networkmanager/src/tunnel.rs
+index 3de2bab..e25d446 100644
+--- a/networkmanager/src/tunnel.rs
++++ b/networkmanager/src/tunnel.rs
+@@ -92,6 +92,7 @@ pub fn parse_settings(
+         .get("verify-cert")
+         .map(|s: &String| s == "yes")
+         .unwrap_or(false);
++    let cert_sha256 = data_map.get("cert-sha256").filter(|s| !s.is_empty()).cloned();
+     let mru: u16 = data_map
+         .get("mru")
+         .map(|s: &String| s.parse().unwrap_or(0))
+@@ -125,6 +126,7 @@ pub fn parse_settings(
+         username,
+         password,
+         accept_self_signed: !verify_cert,
++        cert_sha256,
+         default_gateway: !never_default,
+         route_remote_network,
+         routes,
+@@ -253,6 +255,7 @@ async fn run_tunnel(
+         &profile.username,
+         &profile.password,
+         profile.accept_self_signed,
++        profile.cert_sha256.as_deref(),
+     )
+     .await?;
+ 
+diff --git a/protocol/src/connection.rs b/protocol/src/connection.rs
+index 3f9b58c..d6de2b9 100644
+--- a/protocol/src/connection.rs
++++ b/protocol/src/connection.rs
+@@ -1,6 +1,7 @@
+ /// TLS connection and HTTP CONNECT handshake.
+ use anyhow::{bail, Context, Result};
+ use base64::Engine;
++use openssl::hash::MessageDigest;
+ use openssl::ssl::{SslConnector, SslMethod, SslOptions, SslVerifyMode};
+ use std::pin::Pin;
+ use tokio::io::{AsyncReadExt, AsyncWriteExt};
+@@ -19,7 +20,10 @@ pub async fn connect(
+     username: &str,
+     password: &str,
+     accept_self_signed: bool,
++    cert_sha256: Option<&str>,
+ ) -> Result<SslStream<TcpStream>> {
++    let pin = cert_sha256.map(normalize_pin).transpose()?;
++
+     // Step 1: TCP connection
+     let addr = format!("{server}:{port}");
+     info!("Connecting to {addr}");
+@@ -41,7 +45,8 @@ pub async fn connect(
+         SslConnector::builder(SslMethod::tls()).context("Failed to create SSL connector")?;
+     // DrayTek routers require legacy TLS renegotiation
+     builder.set_options(SslOptions::ALLOW_UNSAFE_LEGACY_RENEGOTIATION);
+-    if accept_self_signed {
++    // A pin replaces CA verification: the leaf cert is checked by fingerprint below
++    if accept_self_signed || pin.is_some() {
+         builder.set_verify(SslVerifyMode::NONE);
+     }
+ 
+@@ -59,6 +64,26 @@ pub async fn connect(
+         .await
+         .context("TLS handshake failed")?;
+ 
++    // Check the pin before any credentials are sent
++    if let Some(want) = pin {
++        let cert = tls_stream
++            .ssl()
++            .peer_certificate()
++            .context("Server sent no certificate")?;
++        let got: String = cert
++            .digest(MessageDigest::sha256())
++            .context("Failed to hash server certificate")?
++            .iter()
++            .map(|b| format!("{b:02x}"))
++            .collect();
++        if got != want {
++            bail!("Server certificate SHA-256 {got} does not match pinned {want}");
++        }
++        info!("Server certificate matches pinned SHA-256");
++    } else if accept_self_signed {
++        tracing::warn!("Certificate not verified: set cert-sha256 to pin the server certificate");
++    }
++
+     info!("TLS connection established");
+ 
+     // Step 3: HTTP CONNECT handshake
+@@ -137,3 +162,31 @@ mod tests {
+         assert!(parse_http_status("garbage").is_err());
+     }
+ }
++
++/// Normalize a SHA-256 pin to 64 lowercase hex chars (accepts `AA:BB:..` from `openssl x509 -fingerprint`).
++fn normalize_pin(pin: &str) -> Result<String> {
++    let hex: String = pin
++        .chars()
++        .filter(|c| *c != ':' && !c.is_whitespace())
++        .collect::<String>()
++        .to_ascii_lowercase();
++    if hex.len() != 64 || !hex.chars().all(|c| c.is_ascii_hexdigit()) {
++        bail!("cert-sha256 must be 64 hex chars (colons optional), got {pin:?}");
++    }
++    Ok(hex)
++}
++
++#[cfg(test)]
++mod pin_tests {
++    use super::normalize_pin;
++
++    #[test]
++    fn normalizes_and_rejects() {
++        let colon = ["AB"; 32].join(":");
++        assert_eq!(normalize_pin(&colon).unwrap(), "ab".repeat(32));
++        assert_eq!(normalize_pin(&"0f".repeat(32)).unwrap(), "0f".repeat(32));
++        assert!(normalize_pin("").is_err());
++        assert!(normalize_pin(&"zz".repeat(32)).is_err());
++        assert!(normalize_pin(&"ab".repeat(31)).is_err());
++    }
++}
+diff --git a/protocol/src/types.rs b/protocol/src/types.rs
+index fe55f1c..482835b 100644
+--- a/protocol/src/types.rs
++++ b/protocol/src/types.rs
+@@ -16,6 +16,8 @@ pub struct ConnectionProfile {
+     pub password: String,
+     /// Accept self-signed certificates.
+     pub accept_self_signed: bool,
++    /// Pinned SHA-256 fingerprint of the server certificate (hex, colons optional).
++    pub cert_sha256: Option<String>,
+     /// Use default route through VPN.
+     pub default_gateway: bool,
+     /// Automatically route the gateway's /24 subnet through the VPN.
+@@ -37,6 +39,7 @@ impl Default for ConnectionProfile {
+             username: String::new(),
+             password: String::new(),
+             accept_self_signed: true,
++            cert_sha256: None,
+             default_gateway: false,
+             route_remote_network: true,
+             routes: Vec::new(),
+diff --git a/standalone/src/config.rs b/standalone/src/config.rs
+index acf1545..240caf3 100644
+--- a/standalone/src/config.rs
++++ b/standalone/src/config.rs
+@@ -55,6 +55,7 @@ impl From<ProfileConfig> for ConnectionProfile {
+             username: cfg.username,
+             password,
+             accept_self_signed: cfg.accept_self_signed,
++            cert_sha256: None,
+             default_gateway: cfg.default_gateway,
+             route_remote_network: cfg.route_remote_network,
+             routes: cfg.routes,
+diff --git a/standalone/src/tunnel/engine.rs b/standalone/src/tunnel/engine.rs
+index 6485d6b..753d5d7 100644
+--- a/standalone/src/tunnel/engine.rs
++++ b/standalone/src/tunnel/engine.rs
+@@ -90,6 +90,7 @@ async fn run_inner(
+         &profile.username,
+         &profile.password,
+         profile.accept_self_signed,
++        profile.cert_sha256.as_deref(),
+     )
+     .await?;
+ 
