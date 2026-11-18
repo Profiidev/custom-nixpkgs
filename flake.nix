@@ -113,6 +113,7 @@
             corona = inputs.corona.packages.${system}.default;
             aurora = inputs.aurora.packages.${system}.default;
             umbriel = inputs.umbriel.packages.${system}.default;
+            xdg-desktop-portal-umbriel = inputs.umbriel.packages.${system}.xdg-desktop-portal-umbriel;
           };
 
           externalPkgs = prev.lib.foldl (acc: overlay: acc // (overlay final prev)) { } externalOverlays;

@@ -14,6 +14,7 @@
   "corona"
   "aurora"
   "umbriel"
+  "xdg-desktop-portal-umbriel"
   "xwayland"
   "linuxPackages_latest.nvidiaPackages.latest"
   "linuxPackages_latest.nvidiaPackages.latest.settings"
