@@ -36,9 +36,40 @@ index 92eb83e..ff13139 100644
  /* vpn.secrets key names */
  #define NM_DRAYTEK_KEY_PASSWORD             "password"
 diff --git a/networkmanager/src/tunnel.rs b/networkmanager/src/tunnel.rs
-index 3de2bab..e25d446 100644
+index 3de2bab..5ea6365 100644
 --- a/networkmanager/src/tunnel.rs
 +++ b/networkmanager/src/tunnel.rs
+@@ -2,14 +2,14 @@
+ //!
+ //! Connects, negotiates, creates TUN (as root), emits D-Bus signals, runs data loop.
+ 
+-use anyhow::{bail, Context, Result};
++use anyhow::{anyhow, bail, Context, Result};
+ use bytes::BytesMut;
+ use std::collections::HashMap;
+ use std::net::Ipv4Addr;
+ use std::sync::atomic::{AtomicBool, Ordering};
+ use std::sync::Arc;
+ use tokio::io::{AsyncReadExt, AsyncWriteExt};
+-use tokio::sync::Notify;
++use tokio::sync::{mpsc, Notify};
+ use tracing::{debug, error, info, warn};
+ use zbus::zvariant::OwnedValue;
+ use zbus::Connection;
+@@ -19,11 +19,11 @@ use crate::plugin::nm_vpn_failure;
+ use draytek_vpn_protocol::connection;
+ use draytek_vpn_protocol::constants::*;
+ use draytek_vpn_protocol::engine_common::{
+-    execute_actions, send_ppp_frame, PingKeeper, PppFsmPair, TrafficStats, TunnelAddrs,
++    execute_actions, PingKeeper, PppFsmPair, TrafficStats, TunnelAddrs,
+ };
+ use draytek_vpn_protocol::keepalive::KeepaliveTracker;
+ use draytek_vpn_protocol::negotiate::{self, NegotiationStatus};
+-use draytek_vpn_protocol::protocol::fsm::FsmEvent;
++use draytek_vpn_protocol::protocol::fsm::{FsmAction, FsmEvent};
+ use draytek_vpn_protocol::protocol::ppp::PppFrame;
+ use draytek_vpn_protocol::protocol::ppp_control::PppControlFrame;
+ use draytek_vpn_protocol::protocol::sstp::SstpPacket;
 @@ -92,6 +92,7 @@ pub fn parse_settings(
          .get("verify-cert")
          .map(|s: &String| s == "yes")
@@ -63,6 +94,240 @@ index 3de2bab..e25d446 100644
      )
      .await?;
  
+@@ -401,7 +404,18 @@ async fn run_tunnel(
+     data_result
+ }
+ 
++/// Data packets queued for the TLS writer. Small on purpose: when the uplink is slow the TUN
++/// queue fills and drops instead, so TCP inside the tunnel backs off (no bufferbloat).
++const DATA_QUEUE: usize = 64;
++/// How long a disconnect waits for the CLOSE frames to reach the server.
++const CLOSE_FLUSH: std::time::Duration = std::time::Duration::from_secs(2);
++
+ /// Data transfer loop for the NM plugin.
++///
++/// Reading and writing run as separate futures over the split TLS stream. With a single
++/// select loop a TLS write blocked by a full uplink (e.g. a large upload) stopped all reads:
++/// no keepalive replies, no LCP, no NM disconnect. The router then dropped the session after
++/// ~30 s and refused reconnects until its old session timed out.
+ async fn data_loop(
+     tun: &tun_rs::AsyncDevice,
+     tls_stream: &mut tokio_openssl::SslStream<tokio::net::TcpStream>,
+@@ -412,6 +426,89 @@ async fn data_loop(
+     keepalive_enabled: bool,
+ ) -> Result<()> {
+     info!("Entering data transfer loop");
++    let (tls_read, tls_write) = tokio::io::split(tls_stream);
++    let (ctrl_tx, ctrl_rx) = mpsc::unbounded_channel();
++    let (data_tx, data_rx) = mpsc::channel(DATA_QUEUE);
++    let writer = write_loop(tls_write, ctrl_rx, data_rx);
++    tokio::pin!(writer);
++    let reader = read_loop(
++        tun,
++        tls_read,
++        socket_buf,
++        fsms,
++        addrs,
++        shutdown,
++        keepalive_enabled,
++        ctrl_tx,
++        data_tx,
++    );
++
++    tokio::select! {
++        written = &mut writer => written,
++        read = reader => {
++            // The reader dropped its senders: the writer ends once CLOSE frames are out
++            if tokio::time::timeout(CLOSE_FLUSH, writer).await.is_err() {
++                warn!("TLS writer still blocked, closing without flush");
++            }
++            read
++        }
++    }
++}
++
++/// Writes queued frames to TLS, control frames (LCP, IPCP, keepalive) before data.
++async fn write_loop<W: tokio::io::AsyncWrite + Unpin>(
++    mut tls_write: W,
++    mut ctrl_rx: mpsc::UnboundedReceiver<Vec<u8>>,
++    mut data_rx: mpsc::Receiver<Vec<u8>>,
++) -> Result<()> {
++    loop {
++        let bytes = tokio::select! {
++            biased;
++            Some(bytes) = ctrl_rx.recv() => bytes,
++            Some(bytes) = data_rx.recv() => bytes,
++            else => return Ok(()),
++        };
++        tls_write
++            .write_all(&bytes)
++            .await
++            .context("Failed to write PPP frame to TLS stream")?;
++    }
++}
++
++/// Queues a control frame for the writer.
++fn queue_ctrl(ctrl_tx: &mpsc::UnboundedSender<Vec<u8>>, bytes: Vec<u8>) -> Result<()> {
++    if !bytes.is_empty() {
++        ctrl_tx
++            .send(bytes)
++            .map_err(|_| anyhow!("TLS writer stopped"))?;
++    }
++    Ok(())
++}
++
++/// Encodes FSM actions (frames to send) for the control queue.
++async fn ctrl_actions(
++    actions: &[FsmAction],
++    protocol: u16,
++    tag: &str,
++    ctrl_tx: &mpsc::UnboundedSender<Vec<u8>>,
++) -> Result<()> {
++    let mut bytes = Vec::new();
++    execute_actions(actions, protocol, tag, &mut bytes).await?;
++    queue_ctrl(ctrl_tx, bytes)
++}
++
++#[allow(clippy::too_many_arguments)]
++async fn read_loop<R: tokio::io::AsyncRead + Unpin>(
++    tun: &tun_rs::AsyncDevice,
++    mut tls_read: R,
++    socket_buf: &mut BytesMut,
++    fsms: &mut PppFsmPair,
++    addrs: TunnelAddrs,
++    shutdown: &Notify,
++    keepalive_enabled: bool,
++    ctrl_tx: mpsc::UnboundedSender<Vec<u8>>,
++    data_tx: mpsc::Sender<Vec<u8>>,
++) -> Result<()> {
+     let mut keepalive = KeepaliveTracker::new();
+     let mut tun_buf = vec![0u8; MAX_PACKET_SIZE + 64];
+     let mut read_buf = [0u8; READ_BUF_SIZE];
+@@ -423,24 +520,31 @@ async fn data_loop(
+ 
+     loop {
+         let keepalive_delay = keepalive.next_check_duration();
++        let queue_free = data_tx.capacity() > 0;
+ 
+         tokio::select! {
+-            // Read from TUN device
+-            tun_result = tun.recv(&mut tun_buf) => {
++            // Read from TUN only while the writer keeps up; otherwise the kernel queue drops
++            tun_result = tun.recv(&mut tun_buf), if queue_free => {
+                 let tun_result: std::io::Result<usize> = tun_result;
+                 let n = tun_result.context("TUN read failed")?;
+                 if n > 0 {
+                     keepalive.mark_tun_activity();
+                     stats.record_tx(n);
+-                    let ip_packet = &tun_buf[..n];
+-                    let ppp_frame = PppFrame::ipv4(ip_packet.to_vec());
+-                    send_ppp_frame(&ppp_frame, tls_stream).await
++                    let ppp_frame = PppFrame::ipv4(tun_buf[..n].to_vec());
++                    data_tx
++                        .try_send(ppp_frame.to_sstp_bytes())
++                        .map_err(|_| anyhow!("TLS writer stopped"))
+                         .context("Failed to send IP packet to tunnel")?;
+                 }
+             }
+ 
++            // Wake up once the writer has room again
++            permit = data_tx.reserve(), if !queue_free => {
++                permit.map_err(|_| anyhow!("TLS writer stopped"))?;
++            }
++
+             // Read from TLS socket
+-            ssl_result = async { std::pin::Pin::new(&mut *tls_stream).read(&mut read_buf).await } => {
++            ssl_result = tls_read.read(&mut read_buf) => {
+                 let ssl_result: std::io::Result<usize> = ssl_result;
+                 let n = ssl_result.context("TLS read failed in data loop")?;
+                 if n == 0 {
+@@ -481,17 +585,16 @@ async fn data_loop(
+                         if ctrl.code == PPP_TERMINATE_REQ {
+                             info!("LCP terminate from server");
+                             let ack = PppControlFrame::terminate_ack(ctrl.identifier);
+-                            let ppp_frame = PppFrame::new(PPP_LCP, ack.to_bytes());
+-                            send_ppp_frame(&ppp_frame, tls_stream).await?;
++                            queue_ctrl(&ctrl_tx, PppFrame::new(PPP_LCP, ack.to_bytes()).to_sstp_bytes())?;
+                             return Ok(());
+                         }
+                         let actions = fsms.lcp.handle_event(FsmEvent::ReceiveFrame(ctrl));
+-                        execute_actions(&actions, PPP_LCP, fsms.lcp.tag, tls_stream).await?;
++                        ctrl_actions(&actions, PPP_LCP, fsms.lcp.tag, &ctrl_tx).await?;
+                     } else if ppp.is_ipcp() {
+                         let ctrl = PppControlFrame::parse(&ppp.information)
+                             .context("Failed to parse IPCP frame")?;
+                         let actions = fsms.ipcp.handle_event(FsmEvent::ReceiveFrame(ctrl));
+-                        execute_actions(&actions, PPP_IPCP, fsms.ipcp.tag, tls_stream).await?;
++                        ctrl_actions(&actions, PPP_IPCP, fsms.ipcp.tag, &ctrl_tx).await?;
+                     } else if ppp.is_ccp() {
+                         let ctrl = PppControlFrame::parse(&ppp.information)
+                             .context("Failed to parse CCP frame")?;
+@@ -499,8 +602,7 @@ async fn data_loop(
+                             let options = ctrl.parse_options()
+                                 .context("Failed to parse CCP options")?;
+                             let reject = PppControlFrame::config_reject(ctrl.identifier, &options);
+-                            let ppp_frame = PppFrame::new(PPP_CCP, reject.to_bytes());
+-                            send_ppp_frame(&ppp_frame, tls_stream).await?;
++                            queue_ctrl(&ctrl_tx, PppFrame::new(PPP_CCP, reject.to_bytes()).to_sstp_bytes())?;
+                         }
+                     } else {
+                         debug!("Ignoring PPP protocol 0x{:04X}", ppp.protocol);
+@@ -511,17 +613,14 @@ async fn data_loop(
+             // Keepalive timer
+             _ = tokio::time::sleep(keepalive_delay) => {
+                 if let Some(counter) = keepalive.should_send_request() {
+-                    let pkt = SstpPacket::keepalive_request(counter);
+-                    std::pin::Pin::new(&mut *tls_stream)
+-                        .write_all(&pkt.to_bytes())
+-                        .await
++                    queue_ctrl(&ctrl_tx, SstpPacket::keepalive_request(counter).to_bytes())
+                         .context("Failed to send keepalive")?;
+                 }
+                 if keepalive.is_dead() {
+                     bail!("Keepalive timeout");
+                 }
+                 if let Some(frame) = ping.maybe_send() {
+-                    send_ppp_frame(&frame, tls_stream).await?;
++                    queue_ctrl(&ctrl_tx, frame.to_sstp_bytes())?;
+                 }
+             }
+ 
+@@ -529,11 +628,8 @@ async fn data_loop(
+             _ = shutdown.notified() => {
+                 info!("Disconnect requested by NM");
+                 let actions = fsms.lcp.handle_event(FsmEvent::Close);
+-                execute_actions(&actions, PPP_LCP, fsms.lcp.tag, tls_stream).await?;
+-                let close_pkt = SstpPacket::close();
+-                std::pin::Pin::new(&mut *tls_stream)
+-                    .write_all(&close_pkt.to_bytes())
+-                    .await
++                ctrl_actions(&actions, PPP_LCP, fsms.lcp.tag, &ctrl_tx).await?;
++                queue_ctrl(&ctrl_tx, SstpPacket::close().to_bytes())
+                     .context("Failed to send SSTP CLOSE")?;
+                 return Ok(());
+             }
+@@ -542,3 +638,21 @@ async fn data_loop(
+ 
+     Ok(())
+ }
++
++#[cfg(test)]
++mod write_loop_tests {
++    use super::*;
++
++    #[tokio::test]
++    async fn control_frames_go_before_queued_data() {
++        let (ctrl_tx, ctrl_rx) = mpsc::unbounded_channel();
++        let (data_tx, data_rx) = mpsc::channel(DATA_QUEUE);
++        data_tx.send(b"data".to_vec()).await.unwrap();
++        ctrl_tx.send(b"ctrl".to_vec()).unwrap();
++        drop((ctrl_tx, data_tx));
++
++        let mut out = Vec::new();
++        write_loop(&mut out, ctrl_rx, data_rx).await.unwrap();
++        assert_eq!(out, b"ctrldata");
++    }
++}
 diff --git a/protocol/src/connection.rs b/protocol/src/connection.rs
 index 3f9b58c..d6de2b9 100644
 --- a/protocol/src/connection.rs

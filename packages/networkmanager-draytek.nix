@@ -28,6 +28,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   # Upstream skips certificate verification for self-signed routers; this adds a
   # per-connection SHA-256 pin (vpn.data cert-sha256) checked before credentials are sent.
+  # It also splits the NM data loop into reader and writer: upstream blocked all TLS reads
+  # while a write waited on a full uplink, so large uploads killed the session.
   patches = [ ../patches/networkmanager-draytek-cert-pin.patch ];
 
   postPatch = ''
